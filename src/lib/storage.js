@@ -2,11 +2,11 @@ const STORAGE_KEYS = {
   library: 'bookverse-library',
   theme: 'bookverse-theme',
   progress: 'bookverse-reading-progress',
+  reader: 'bookverse-reader-preferences',
 };
 
 function readJSON(key, fallback) {
   if (typeof window === 'undefined') return fallback;
-
   try {
     const value = window.localStorage.getItem(key);
     return value ? JSON.parse(value) : fallback;
@@ -17,12 +17,7 @@ function readJSON(key, fallback) {
 
 function writeJSON(key, value) {
   if (typeof window === 'undefined') return;
-
-  try {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    // Storage can be unavailable in private browsing or restricted contexts.
-  }
+  try { window.localStorage.setItem(key, JSON.stringify(value)); } catch {}
 }
 
 export function getLibrary() {
@@ -30,9 +25,7 @@ export function getLibrary() {
   return Array.isArray(library) ? library : [];
 }
 
-export function saveLibrary(library) {
-  writeJSON(STORAGE_KEYS.library, library);
-}
+export function saveLibrary(library) { writeJSON(STORAGE_KEYS.library, library); }
 
 export function getTheme() {
   if (typeof window === 'undefined') return 'light';
@@ -54,6 +47,16 @@ export function saveReadingProgress(bookId, value) {
   const next = typeof progress === 'object' && progress !== null ? progress : {};
   next[bookId] = Math.max(0, Math.min(100, Math.round(value)));
   writeJSON(STORAGE_KEYS.progress, next);
+}
+
+export function getReaderPreferences() {
+  const defaults = { fontSize: 18, width: 'comfortable', theme: 'paper' };
+  const saved = readJSON(STORAGE_KEYS.reader, defaults);
+  return { ...defaults, ...(saved && typeof saved === 'object' ? saved : {}) };
+}
+
+export function saveReaderPreferences(preferences) {
+  writeJSON(STORAGE_KEYS.reader, preferences);
 }
 
 export { STORAGE_KEYS };
