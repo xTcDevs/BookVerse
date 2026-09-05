@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link, Navigate, Outlet, Route, Routes, useOutletContext, useParams, useSearchParams } from 'react-router-dom';
+import { Link, Outlet, Route, Routes, useOutletContext, useParams, useSearchParams } from 'react-router-dom';
 import { books, genres } from './data/books.js';
 import BookCard from './components/BookCard.jsx';
 import Reader from './components/Reader.jsx';
@@ -80,7 +80,7 @@ function NotFound({ title = 'Page not found.', back = '/' }) {
 }
 
 function AppLayout({ dark, onTheme, ...context }) {
-  return <PageShell savedCount={context.saved.length} dark={dark} onTheme={onTheme} />;
+  return <PageShell savedCount={context.saved.length} dark={dark} onTheme={onTheme} context={context} />;
 }
 
 export default function App() {
@@ -90,14 +90,12 @@ export default function App() {
   const context = { saved, toggle, remove, clear };
   return <Routes>
     <Route element={<AppLayout dark={dark} onTheme={() => setDark(!dark)} {...context} />}>
-      <Route path="/" element={<Outlet context={context} />}>
-        <Route index element={<Home />} />
-      </Route>
-      <Route path="/book/:id" element={<Outlet context={context} />}><Route index element={<BookPage />} /></Route>
-      <Route path="/library" element={<Outlet context={context} />}><Route index element={<Library />} /></Route>
-      <Route path="/genres" element={<Outlet context={context} />}><Route index element={<GenresPage />} /></Route>
-      <Route path="/authors" element={<Outlet context={context} />}><Route index element={<AuthorsPage />} /></Route>
-      <Route path="/author/:name" element={<Outlet context={context} />}><Route index element={<AuthorProfile />} /></Route>
+      <Route path="/" element={<Outlet />}><Route index element={<Home />} /></Route>
+      <Route path="/book/:id" element={<Outlet />}><Route index element={<BookPage />} /></Route>
+      <Route path="/library" element={<Outlet />}><Route index element={<Library />} /></Route>
+      <Route path="/genres" element={<Outlet />}><Route index element={<GenresPage />} /></Route>
+      <Route path="/authors" element={<Outlet />}><Route index element={<AuthorsPage />} /></Route>
+      <Route path="/author/:name" element={<Outlet />}><Route index element={<AuthorProfile />} /></Route>
       <Route path="*" element={<NotFound />} />
     </Route>
   </Routes>;
