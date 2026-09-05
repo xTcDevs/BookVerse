@@ -1,0 +1,25 @@
+import { useMemo, useState } from 'react';
+import { books, genres } from '../data/books.js';
+import BookCard from '../components/BookCard.jsx';
+
+const getAuthors = () => [...new Set(books.map((book) => book.author))];
+
+export default function Home({ saved, toggle }) {
+  const [query, setQuery] = useState('');
+  const [genre, setGenre] = useState('All');
+  const filtered = useMemo(() => books.filter((book) => (genre === 'All' || book.genre === genre) && `${book.title} ${book.author} ${book.genre}`.toLowerCase().includes(query.toLowerCase())), [query, genre]);
+  const recommended = useMemo(() => {
+    if (!saved.length) return books.filter((book) => book.rating >= 4.8).slice(0, 3);
+    const savedGenres = saved.map((id) => books.find((book) => book.id === id)?.genre).filter(Boolean);
+    return books.filter((book) => !saved.includes(book.id) && savedGenres.includes(book.genre)).sort((a, b) => b.rating - a.rating).slice(0, 3);
+  }, [saved]);
+  return <main>
+    <section className="hero" id="discover"><div className="hero-copy"><span className="eyebrow">The modern bookshelf</span><h1>Find a story worth getting lost in.</h1><p>Discover books, follow authors, and build a library that feels like yours.</p><div className="search"><span>⌕</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search books, authors, genres..."/><button onClick={() => document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })}>Search</button></div></div><div className="hero-art"><div className="book-stack"><i>BOOK</i><i>VERSE</i><i>READ</i></div></div></section>
+    <section className="stats"><div><strong>{books.length}</strong><span>Stories</span></div><div><strong>{genres.length}</strong><span>Genres</span></div><div><strong>{getAuthors().length}</strong><span>Authors</span></div><div><strong>{(books.reduce((sum, book) => sum + book.rating, 0) / books.length).toFixed(1)}</strong><span>Avg. rating</span></div></section>
+    <section className="section" id="genres"><div className="section-head"><div><span className="eyebrow">Explore</span><h2>Browse by genre</h2></div><a className="view-link" href="/genres">View all →</a></div><div className="genre-row"><button className={genre === 'All' ? 'active' : ''} onClick={() => setGenre('All')}>All books</button>{genres.map((item) => <button className={genre === item ? 'active' : ''} key={item} onClick={() => setGenre(item)}>{item}</button>)}</div></section>
+    <section className="section" id="catalog"><div className="section-head"><div><span className="eyebrow">Curated for you</span><h2>{query || genre !== 'All' ? 'Search results' : 'Trending stories'}</h2></div><span className="result-count">{filtered.length} books</span></div><div className="book-grid">{filtered.map((book) => <BookCard key={book.id} book={book} saved={saved.includes(book.id)} onToggle={toggle} />)}{!filtered.length && <div className="empty"><h3>No stories found.</h3><p>Try another title, author, or genre.</p></div>}</div></section>
+    <section className="section recommendation"><div className="section-head"><div><span className="eyebrow">Personalized shelf</span><h2>{saved.length ? 'More like your library' : 'Readers are loving these'}</h2></div></div><div className="book-grid">{recommended.map((book) => <BookCard key={book.id} book={book} saved={saved.includes(book.id)} onToggle={toggle} />)}</div></section>
+    <section className="library-strip" id="library"><div><span className="eyebrow">Your collection</span><h2>Keep the stories you don't want to lose.</h2><p>Your saved books stay in this browser.</p></div><strong>{saved.length}<small> saved</small></strong></section>
+    <section className="section authors" id="authors"><div className="section-head"><div><span className="eyebrow">Meet the writers</span><h2>Authors worth following</h2></div><a className="view-link" href="/authors">View all →</a></div><div className="author-row">{getAuthors().map((author) => <a href={`/author/${encodeURIComponent(author)}`} key={author}>{author}<span>{books.filter((book) => book.author === author).length} books · View profile →</span></a>)}</div></section>
+  </main>;
+}
