@@ -1,55 +1,87 @@
 # BookVerse 📚
 
-BookVerse is a responsive front-end concept for discovering books, exploring genres, and building a personal reading library.
+BookVerse is a React + Vite reading-discovery experience for finding stories, exploring genres and authors, and building a personal library.
 
-## ✨ Highlights
+## ✨ Features
 
-- Modern editorial-style landing page
-- Responsive layout for desktop, tablet, and mobile
-- Book discovery and genre browsing
-- Client-side book search
-- Save/unsave books with `localStorage`
-- Light/dark theme preference
-- Newsletter interaction
-- Accessible labels and semantic structure
-- No framework required — runs directly in the browser
+- Editorial-inspired responsive interface
+- Search across titles, authors, and genres
+- Genre exploration and filtering
+- Author directory and author profiles
+- Individual book detail pages with previews
+- Save / remove books from a local library
+- Library search
+- Persistent light / dark theme preference
+- Shared book data across the entire app
+- Responsive mobile navigation
+- 404 states for unknown books and authors
 
-## 🛠️ Built With
+## 🛠️ Stack
 
-- HTML5
-- CSS3
-- Vanilla JavaScript
-- Google Fonts
-- Local Storage API
+- React
+- Vite
+- JavaScript (ES modules)
+- CSS
+- Browser Local Storage
 
-## 🚀 Running Locally
+## 🚀 Run locally
 
-No build step is required.
+```bash
+npm install
+npm run dev
+```
 
-1. Clone the repository.
-2. Open `index.html` in a browser, or serve the folder with any local static server.
+For a production build:
 
-## 📁 Current Structure
+```bash
+npm run build
+npm run preview
+```
+
+## 📁 Structure
 
 ```text
 BookVerse/
 ├── index.html
-└── README.md
+├── package.json
+├── vite.config.js
+├── src/
+│   ├── main.jsx
+│   ├── App.jsx
+│   ├── styles.css
+│   ├── data/
+│   │   └── books.js
+│   └── components/
+│       ├── BookCard.jsx
+│       ├── Header.jsx
+│       └── Footer.jsx
+└── .gitignore
 ```
+
+## 🧭 Current routes
+
+- `/` — discovery
+- `/genres` — genre explorer
+- `/authors` — author directory
+- `/author/:name` — author profile
+- `/book/:id` — book details and preview
+- `/library` — saved books
 
 ## 🗺️ Roadmap
 
-- Dedicated book detail pages
-- Reader experience and chapters
-- Authentication
-- Persistent cloud library
-- Author profiles and publishing dashboard
-- Recommendations powered by reading activity
-- Backend/API integration
+- Real authentication
+- Cloud-synced libraries
+- Supabase database/API integration
+- Full reader with chapters and reading progress
+- Recommendations based on reading activity
+- User profiles
+- Author publishing dashboard
+- Ratings and reviews
+- Production deployment and automated checks
 
-## 🎯 Project Goal
+## 🎯 Project goal
 
-BookVerse is being developed as a portfolio project exploring product design, responsive front-end development, interaction design, and the foundations of a future reading platform.
+BookVerse is being developed as a portfolio-quality product project exploring product design, reusable React architecture, responsive UI engineering, and the foundations of a future reading platform.
 
 ## 📄 License
 
