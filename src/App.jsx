@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link, Outlet, Route, Routes, useOutletContext, useParams, useSearchParams } from 'react-router-dom';
+import { Link, Route, Routes, useOutletContext, useParams, useSearchParams } from 'react-router-dom';
 import { books, genres } from './data/books.js';
 import BookCard from './components/BookCard.jsx';
 import Reader from './components/Reader.jsx';
@@ -79,23 +79,27 @@ function NotFound({ title = 'Page not found.', back = '/' }) {
   return <main className="section page"><span className="eyebrow">404</span><h1>{title}</h1><p className="description">The page you're looking for doesn't exist.</p><Link className="view-link" to={back}>← Go back</Link></main>;
 }
 
-function AppLayout({ dark, onTheme, ...context }) {
+function AppLayout({ dark, onTheme, context }) {
   return <PageShell savedCount={context.saved.length} dark={dark} onTheme={onTheme} context={context} />;
 }
 
 export default function App() {
   const [dark, setDarkState] = useState(() => getTheme() === 'dark');
-  const setDark = (value) => { setDarkState(value); saveTheme(value ? 'dark' : 'light'); };
+  const setDark = () => setDarkState((current) => {
+    const next = !current;
+    saveTheme(next ? 'dark' : 'light');
+    return next;
+  });
   const { library: saved, toggle, remove, clear } = useLibrary();
   const context = { saved, toggle, remove, clear };
   return <Routes>
-    <Route element={<AppLayout dark={dark} onTheme={() => setDark(!dark)} {...context} />}>
-      <Route path="/" element={<Outlet />}><Route index element={<Home />} /></Route>
-      <Route path="/book/:id" element={<Outlet />}><Route index element={<BookPage />} /></Route>
-      <Route path="/library" element={<Outlet />}><Route index element={<Library />} /></Route>
-      <Route path="/genres" element={<Outlet />}><Route index element={<GenresPage />} /></Route>
-      <Route path="/authors" element={<Outlet />}><Route index element={<AuthorsPage />} /></Route>
-      <Route path="/author/:name" element={<Outlet />}><Route index element={<AuthorProfile />} /></Route>
+    <Route element={<AppLayout dark={dark} onTheme={setDark} context={context} />}>
+      <Route path="/" element={<Home />} />
+      <Route path="/book/:id" element={<BookPage />} />
+      <Route path="/library" element={<Library />} />
+      <Route path="/genres" element={<GenresPage />} />
+      <Route path="/authors" element={<AuthorsPage />} />
+      <Route path="/author/:name" element={<AuthorProfile />} />
       <Route path="*" element={<NotFound />} />
     </Route>
   </Routes>;
