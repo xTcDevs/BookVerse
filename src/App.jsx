@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { BrowserRouter, Link, Navigate, Route, Routes, useParams, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useParams, useSearchParams } from 'react-router-dom';
 import { books, genres } from './data/books';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -68,7 +68,7 @@ function AuthorProfile({ saved, toggle, dark, setDark }) {
   const { name = '' } = useParams();
   const author = decodeURIComponent(name);
   const authored = books.filter((book) => book.author === author);
-  if (!authored.length) return <NotFound title="Author not found." back="/authors" />;
+  if (!authored.length) return <PageShell saved={saved} dark={dark} setDark={setDark}><NotFound title="Author not found." back="/authors" /></PageShell>;
   const average = (authored.reduce((sum, book) => sum + book.rating, 0) / authored.length).toFixed(1);
   const readers = authored.reduce((sum, book) => sum + ratingCount(book.ratings), 0).toLocaleString();
   return <PageShell saved={saved} dark={dark} setDark={setDark}><main className="section page"><div className="profile-head"><div className="avatar">{author.split(' ').map((part) => part[0]).join('').slice(0, 2)}</div><div><span className="eyebrow">Author profile</span><h1>{author}</h1><div className="profile-stats"><span><b>{authored.length}</b> books</span><span><b>{average}</b> avg. rating</span><span><b>{readers}</b> readers</span></div></div></div><p className="description">A BookVerse author profile featuring {authored.length === 1 ? 'one story' : `${authored.length} stories`} currently in the collection.</p><section className="section"><div className="section-head"><div><span className="eyebrow">Bibliography</span><h2>Books by {author.split(' ')[0]}</h2></div></div><div className="book-grid">{authored.map((book) => <BookCard key={book.id} book={book} saved={saved.includes(book.id)} onToggle={toggle} />)}</div></section></main></PageShell>;
@@ -78,7 +78,7 @@ function NotFound({ title = 'Page not found.', back = '/' }) {
   return <main className="section page"><span className="eyebrow">404</span><h1>{title}</h1><p className="description">The page you're looking for doesn't exist.</p><Link className="view-link" to={back}>← Go back</Link></main>;
 }
 
-function AppContent() {
+export default function App() {
   const [dark, setDarkState] = useState(() => getTheme() === 'dark');
   const setDark = (value) => { setDarkState(value); saveTheme(value ? 'dark' : 'light'); };
   const { library: saved, toggle } = useLibrary();
@@ -92,8 +92,4 @@ function AppContent() {
     <Route path="/author/:name" element={<AuthorProfile {...shellProps} />} />
     <Route path="*" element={<PageShell saved={saved} dark={dark} setDark={setDark}><NotFound /></PageShell>} />
   </Routes>;
-}
-
-export default function App() {
-  return <BrowserRouter><AppContent /></BrowserRouter>;
 }
