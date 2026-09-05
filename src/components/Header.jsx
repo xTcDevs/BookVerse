@@ -1,3 +1,16 @@
+import { useState } from 'react';
+
 export default function Header({ savedCount, dark, onTheme }) {
-  return <header className="header"><a className="brand" href="/">Book<span>Verse</span></a><nav><a href="/#discover">Discover</a><a href="/#genres">Genres</a><a href="/#authors">Authors</a><a href="/library">Library <small>{savedCount}</small></a></nav><button className="theme" onClick={onTheme} aria-label="Toggle theme">{dark ? '☀' : '◐'}</button></header>;
+  const [open, setOpen] = useState(false);
+  const close = () => setOpen(false);
+  return <header className="header">
+    <a className="brand" href="/" onClick={close}>Book<span>Verse</span></a>
+    <nav className={open ? 'nav-open' : ''}>
+      <a href="/#discover" onClick={close}>Discover</a>
+      <a href="/genres" onClick={close}>Genres</a>
+      <a href="/authors" onClick={close}>Authors</a>
+      <a href="/library" onClick={close}>Library <small>{savedCount}</small></a>
+    </nav>
+    <div className="header-actions"><button className="theme" onClick={onTheme} aria-label="Toggle theme">{dark ? '☀' : '◐'}</button><button className="menu" onClick={() => setOpen(!open)} aria-label="Toggle navigation" aria-expanded={open}>{open ? '×' : '☰'}</button></div>
+  </header>;
 }
