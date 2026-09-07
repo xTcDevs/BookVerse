@@ -4,7 +4,7 @@ import { books, genres } from './data/books.js';
 import BookCard from './components/BookCard.jsx';
 import Reader from './components/Reader.jsx';
 import PageShell from './layouts/PageShell.jsx';
-import { getTheme, saveTheme } from './lib/storage.js';
+import { getReadingProgress, getTheme, saveTheme } from './lib/storage.js';
 import { useLibrary } from './hooks/useLibrary.js';
 
 const getBook = (id) => books.find((book) => book.id === id);
@@ -44,9 +44,28 @@ function BookPage() {
 function Library() {
   const { saved, toggle, remove, clear } = useApp();
   const [query, setQuery] = useState('');
-  const [sort, setSort] = useState('recent');
-  const owned = useMemo(() => books.filter((book) => saved.includes(book.id) && `${book.title} ${book.author} ${book.genre}`.toLowerCase().includes(query.toLowerCase())).sort((a, b) => sort === 'title' ? a.title.localeCompare(b.title) : sort === 'rating' ? b.rating - a.rating : sort === 'year' ? b.year - a.year : saved.indexOf(a.id) - saved.indexOf(b.id)), [saved, query, sort]);
-  return <main className="section page"><span className="eyebrow">Your collection</span><h1>My Library</h1><p className="description">{saved.length} saved {saved.length === 1 ? 'story' : 'stories'}.</p><div className="library-controls"><div className="search library-search"><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search your library..." /></div><select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort library"><option value="recent">Recently saved</option><option value="title">Title A–Z</option><option value="rating">Highest rated</option><option value="year">Newest</option></select>{saved.length > 0 && <button className="secondary-action" onClick={() => window.confirm('Clear your entire library?') && clear()}>Clear library</button>}</div><div className="book-grid">{owned.map((book) => <div className="library-item" key={book.id}><BookCard book={book} saved onToggle={toggle} /><button className="text-action" onClick={() => remove(book.id)}>Remove from library</button></div>)}</div>{!owned.length && <div className="empty"><h3>{saved.length ? 'No matches.' : 'Your library is empty.'}</h3><p>Save a book from discovery and it will appear here.</p></div>}</main>;
+  const [sort, setSort] = useState('progress');
+  const owned = useMemo(() => books.filter((book) => saved.includes(book.id) && `${book.title} ${book.author} ${book.genre}`.toLowerCase().includes(query.toLowerCase())).sort((a, b) => {
+    if (sort === 'title') return a.title.localeCompare(b.title);
+    if (sort === 'rating') return b.rating - a.rating;
+    if (sort === 'year') return b.year - a.year;
+    if (sort === 'progress') return getReadingProgress(b.id) - getReadingProgress(a.id);
+    return saved.indexOf(a.id) - saved.indexOf(b.id);
+  }), [saved, query, sort]);
+  const inProgress = owned.filter((book) => { const progress = getReadingProgress(book.id); return progress > 0 && progress < 100; });
+  const completed = owned.filter((book) => getReadingProgress(book.id) >= 100);
+  const unread = owned.filter((book) => getReadingProgress(book.id) === 0);
+
+  return <main className="section page">
+    <span className="eyebrow">Your collection</span><h1>My Library</h1><p className="description">{saved.length} saved {saved.length === 1 ? 'story' : 'stories'}.</p>
+    {inProgress.length > 0 && <section className="continue-shelf"><div className="section-head"><div><span className="eyebrow">Pick up where you left off</span><h2>Continue reading</h2></div><span className="result-count">{inProgress.length} in progress</span></div><div className="continue-grid">{inProgress.slice(0, 3).map((book) => <Link className="continue-card" to={`/book/${book.id}`} key={book.id}><div><span className="eyebrow">{getReadingProgress(book.id)}% read</span><h3>{book.title}</h3><p>{book.author}</p></div><div className="book-progress-track"><i style={{ width: `${getReadingProgress(book.id)}%` }} /></div><strong>Continue →</strong></Link>)}</div></section>}
+    <div className="library-controls"><div className="search library-search"><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search your library..." /></div><select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort library"><option value="progress">Reading progress</option><option value="recent">Recently saved</option><option value="title">Title A–Z</option><option value="rating">Highest rated</option><option value="year">Newest</option></select>{saved.length > 0 && <button className="secondary-action" onClick={() => window.confirm('Clear your entire library?') && clear()}>Clear library</button>}</div>
+    {inProgress.length > 0 && <div className="library-group-label"><span>In progress</span><b>{inProgress.length}</b></div>}
+    {completed.length > 0 && <div className="library-group-label"><span>Completed</span><b>{completed.length}</b></div>}
+    {unread.length > 0 && <div className="library-group-label"><span>Unread</span><b>{unread.length}</b></div>}
+    <div className="book-grid">{owned.map((book) => <div className="library-item" key={book.id}><BookCard book={book} saved onToggle={toggle} /><button className="text-action" onClick={() => remove(book.id)}>Remove from library</button></div>)}</div>
+    {!owned.length && <div className="empty"><h3>{saved.length ? 'No matches.' : 'Your library is empty.'}</h3><p>Save a book from discovery and it will appear here.</p></div>}
+  </main>;
 }
 
 function GenresPage() {
