@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getReaderPreferences, saveReaderPreferences } from '../lib/storage.js';
 import { useReadingProgress } from '../hooks/useReadingProgress.js';
 
@@ -9,10 +9,26 @@ export default function Reader({ book }) {
   const [chapter, setChapter] = useState(0);
   const [preferences, setPreferences] = useState(getReaderPreferences);
   const { progress, updateProgress } = useReadingProgress(book.id);
+  const progressRef = useRef(progress);
+  const chapterRef = useRef(chapter);
   const current = chapters[chapter];
 
+  useEffect(() => { progressRef.current = progress; }, [progress]);
+  useEffect(() => { chapterRef.current = chapter; }, [chapter]);
   useEffect(() => saveReaderPreferences(preferences), [preferences]);
-  useEffect(() => setChapter(0), [book.id]);
+  useEffect(() => {
+    setChapter(0);
+    chapterRef.current = 0;
+  }, [book.id]);
+
+  const changeChapter = (next) => {
+    const target = Math.max(0, Math.min(chapters.length - 1, next));
+    setChapter(target);
+    chapterRef.current = target;
+    const chapterProgress = Math.round(((target + 1) / chapters.length) * 100);
+    updateProgress(Math.max(progressRef.current, chapterProgress));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -21,32 +37,27 @@ export default function Reader({ book }) {
       const rect = article.getBoundingClientRect();
       const total = Math.max(1, article.scrollHeight - window.innerHeight);
       const passed = Math.max(0, Math.min(total, -rect.top));
-      const scrollPercent = Math.round((passed / total) * 100);
-      updateProgress(Math.max(progress, scrollPercent));
+      const chapterScroll = Math.round((passed / total) * 100);
+      const base = Math.round((chapterRef.current / chapters.length) * 100);
+      const next = Math.round(base + chapterScroll / chapters.length);
+      if (next > progressRef.current) updateProgress(next);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [book.id, progress, updateProgress]);
-
-  const changeChapter = (next) => {
-    const target = Math.max(0, Math.min(chapters.length - 1, next));
-    setChapter(target);
-    updateProgress(Math.max(progress, Math.round(((target + 1) / chapters.length) * 100)));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, [chapters.length, updateProgress]);
 
   useEffect(() => {
     const onKeyDown = (event) => {
       const target = event.target;
       if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement || target.isContentEditable) return;
-      if (event.key === 'ArrowRight' || event.key === 'PageDown') changeChapter(chapter + 1);
-      if (event.key === 'ArrowLeft' || event.key === 'PageUp') changeChapter(chapter - 1);
+      if (event.key === 'ArrowRight' || event.key === 'PageDown') changeChapter(chapterRef.current + 1);
+      if (event.key === 'ArrowLeft' || event.key === 'PageUp') changeChapter(chapterRef.current - 1);
       if (event.key === '+' || event.key === '=') setPreferences((current) => ({ ...current, fontSize: Math.min(24, current.fontSize + 1) }));
       if (event.key === '-' || event.key === '_') setPreferences((current) => ({ ...current, fontSize: Math.max(15, current.fontSize - 1) }));
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [chapter, progress, chapters.length]);
+  }, [chapters.length]);
 
   const update = (key, value) => setPreferences((current) => ({ ...current, [key]: value }));
   const markComplete = () => updateProgress(100);
