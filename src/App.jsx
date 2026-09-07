@@ -1,17 +1,32 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useOutletContext, useParams, useSearchParams } from 'react-router-dom';
 import { books, genres } from './data/books.js';
 import BookCard from './components/BookCard.jsx';
 import Reader from './components/Reader.jsx';
 import PageShell from './layouts/PageShell.jsx';
-import { getReadingProgress, getTheme, saveTheme } from './lib/storage.js';
+import { getTheme, saveTheme } from './lib/storage.js';
 import { useDebouncedValue } from './hooks/useDebouncedValue.js';
 import { useLibrary } from './hooks/useLibrary.js';
+import { useReadingProgress } from './hooks/useReadingProgress.js';
 
 const getBook = (id) => books.find((book) => book.id === id);
 const getAuthors = () => [...new Set(books.map((book) => book.author))];
 const ratingCount = (value) => parseFloat(value.replace('k', '')) * (value.includes('k') ? 1000 : 1);
 const useApp = () => useOutletContext();
+
+function ScrollToHash() {
+  useEffect(() => {
+    const scroll = () => {
+      if (!window.location.hash) return;
+      const element = document.getElementById(window.location.hash.slice(1));
+      if (element) window.requestAnimationFrame(() => element.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    };
+    scroll();
+    window.addEventListener('hashchange', scroll);
+    return () => window.removeEventListener('hashchange', scroll);
+  }, []);
+  return null;
+}
 
 function Home() {
   const { saved, toggle } = useApp();
@@ -39,7 +54,7 @@ function BookPage() {
   const { saved, toggle } = useApp();
   const { id } = useParams();
   const book = getBook(id);
-  const progress = book ? getReadingProgress(book.id) : 0;
+  const { progress } = useReadingProgress(book?.id || '');
   if (!book) return <NotFound />;
   const readerLabel = progress >= 100 ? 'Read again' : progress > 0 ? `Continue reading · ${progress}%` : 'Start free preview';
   const jumpToReader = () => document.querySelector('.reader')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -55,23 +70,19 @@ function Library() {
     if (sort === 'title') return a.title.localeCompare(b.title);
     if (sort === 'rating') return b.rating - a.rating;
     if (sort === 'year') return b.year - a.year;
-    if (sort === 'progress') return getReadingProgress(b.id) - getReadingProgress(a.id);
+    if (sort === 'progress') return getBookProgress(b.id) - getBookProgress(a.id);
     return saved.indexOf(a.id) - saved.indexOf(b.id);
   }), [saved, search, sort]);
-  const inProgress = owned.filter((book) => { const progress = getReadingProgress(book.id); return progress > 0 && progress < 100; });
-  const completed = owned.filter((book) => getReadingProgress(book.id) >= 100);
-  const unread = owned.filter((book) => getReadingProgress(book.id) === 0);
+  const inProgress = owned.filter((book) => { const progress = getBookProgress(book.id); return progress > 0 && progress < 100; });
+  const completed = owned.filter((book) => getBookProgress(book.id) >= 100);
+  const unread = owned.filter((book) => getBookProgress(book.id) === 0);
   const renderGroup = (label, items) => items.length > 0 && <section className="library-group"><div className="library-group-label"><span>{label}</span><b>{items.length}</b></div><div className="book-grid">{items.map((book) => <div className="library-item" key={book.id}><BookCard book={book} saved onToggle={toggle} /><button className="text-action" onClick={() => remove(book.id)}>Remove from library</button></div>)}</div></section>;
+  return <main className="section page"><span className="eyebrow">Your collection</span><h1>My Library</h1><p className="description">{saved.length} saved {saved.length === 1 ? 'story' : 'stories'}.</p>{inProgress.length > 0 && <section className="continue-shelf"><div className="section-head"><div><span className="eyebrow">Pick up where you left off</span><h2>Continue reading</h2></div><span className="result-count">{inProgress.length} in progress</span></div><div className="continue-grid">{inProgress.slice(0, 3).map((book) => <Link className="continue-card" to={`/book/${book.id}`} key={book.id}><div><span className="eyebrow">{getBookProgress(book.id)}% read</span><h3>{book.title}</h3><p>{book.author}</p></div><div className="book-progress-track"><i style={{ width: `${getBookProgress(book.id)}%` }} /></div><strong>Continue →</strong></Link>)}</div></section>}<div className="library-controls"><div className="search library-search"><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search your library..." /></div><select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort library"><option value="progress">Reading progress</option><option value="recent">Recently saved</option><option value="title">Title A–Z</option><option value="rating">Highest rated</option><option value="year">Newest</option></select>{saved.length > 0 && <button className="secondary-action" onClick={() => window.confirm('Clear your entire library?') && clear()}>Clear library</button>}</div>{renderGroup('In progress', inProgress)}{renderGroup('Completed', completed)}{renderGroup('Unread', unread)}{!owned.length && <div className="empty"><h3>{saved.length ? 'No matches.' : 'Your library is empty.'}</h3><p>Save a book from discovery and it will appear here.</p></div>}</main>;
+}
 
-  return <main className="section page">
-    <span className="eyebrow">Your collection</span><h1>My Library</h1><p className="description">{saved.length} saved {saved.length === 1 ? 'story' : 'stories'}.</p>
-    {inProgress.length > 0 && <section className="continue-shelf"><div className="section-head"><div><span className="eyebrow">Pick up where you left off</span><h2>Continue reading</h2></div><span className="result-count">{inProgress.length} in progress</span></div><div className="continue-grid">{inProgress.slice(0, 3).map((book) => <Link className="continue-card" to={`/book/${book.id}`} key={book.id}><div><span className="eyebrow">{getReadingProgress(book.id)}% read</span><h3>{book.title}</h3><p>{book.author}</p></div><div className="book-progress-track"><i style={{ width: `${getReadingProgress(book.id)}%` }} /></div><strong>Continue →</strong></Link>)}</div></section>}
-    <div className="library-controls"><div className="search library-search"><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search your library..." /></div><select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort library"><option value="progress">Reading progress</option><option value="recent">Recently saved</option><option value="title">Title A–Z</option><option value="rating">Highest rated</option><option value="year">Newest</option></select>{saved.length > 0 && <button className="secondary-action" onClick={() => window.confirm('Clear your entire library?') && clear()}>Clear library</button>}</div>
-    {renderGroup('In progress', inProgress)}
-    {renderGroup('Completed', completed)}
-    {renderGroup('Unread', unread)}
-    {!owned.length && <div className="empty"><h3>{saved.length ? 'No matches.' : 'Your library is empty.'}</h3><p>Save a book from discovery and it will appear here.</p></div>}
-  </main>;
+function getBookProgress(id) {
+  if (typeof window === 'undefined') return 0;
+  try { const value = JSON.parse(window.localStorage.getItem('bookverse-reading-progress') || '{}'); return Number(value[id]) || 0; } catch { return 0; }
 }
 
 function GenresPage() {
@@ -101,32 +112,13 @@ function AuthorProfile() {
   return <main className="section page"><div className="profile-head"><div className="avatar">{author.split(' ').map((part) => part[0]).join('').slice(0, 2)}</div><div><span className="eyebrow">Author profile</span><h1>{author}</h1><div className="profile-stats"><span><b>{authored.length}</b> books</span><span><b>{average}</b> avg. rating</span><span><b>{readers}</b> readers</span></div></div></div><p className="description">A BookVerse author profile featuring {authored.length === 1 ? 'one story' : `${authored.length} stories`} currently in the collection.</p><section className="section"><div className="section-head"><div><span className="eyebrow">Bibliography</span><h2>Books by {author.split(' ')[0]}</h2></div></div><div className="book-grid">{authored.map((book) => <BookCard key={book.id} book={book} saved={saved.includes(book.id)} onToggle={toggle} />)}</div></section></main>;
 }
 
-function NotFound({ title = 'Page not found.', back = '/' }) {
-  return <main className="section page"><span className="eyebrow">404</span><h1>{title}</h1><p className="description">The page you're looking for doesn't exist.</p><Link className="view-link" to={back}>← Go back</Link></main>;
-}
-
-function AppLayout({ dark, onTheme, context }) {
-  return <PageShell savedCount={context.saved.length} dark={dark} onTheme={onTheme} context={context} />;
-}
+function NotFound({ title = 'Page not found.', back = '/' }) { return <main className="section page"><span className="eyebrow">404</span><h1>{title}</h1><p className="description">The page you're looking for doesn't exist.</p><Link className="view-link" to={back}>← Go back</Link></main>; }
+function AppLayout({ dark, onTheme, context }) { return <PageShell savedCount={context.saved.length} dark={dark} onTheme={onTheme} context={context} />; }
 
 export default function App() {
   const [dark, setDarkState] = useState(() => getTheme() === 'dark');
-  const setDark = () => setDarkState((current) => {
-    const next = !current;
-    saveTheme(next ? 'dark' : 'light');
-    return next;
-  });
+  const setDark = () => setDarkState((current) => { const next = !current; saveTheme(next ? 'dark' : 'light'); return next; });
   const { library: saved, toggle, remove, clear } = useLibrary();
   const context = { saved, toggle, remove, clear };
-  return <Routes>
-    <Route element={<AppLayout dark={dark} onTheme={setDark} context={context} />}>
-      <Route path="/" element={<Home />} />
-      <Route path="/book/:id" element={<BookPage />} />
-      <Route path="/library" element={<Library />} />
-      <Route path="/genres" element={<GenresPage />} />
-      <Route path="/authors" element={<AuthorsPage />} />
-      <Route path="/author/:name" element={<AuthorProfile />} />
-      <Route path="*" element={<NotFound />} />
-    </Route>
-  </Routes>;
+  return <><ScrollToHash /><Routes><Route element={<AppLayout dark={dark} onTheme={setDark} context={context} />}><Route path="/" element={<Home />} /><Route path="/book/:id" element={<BookPage />} /><Route path="/library" element={<Library />} /><Route path="/genres" element={<GenresPage />} /><Route path="/authors" element={<AuthorsPage />} /><Route path="/author/:name" element={<AuthorProfile />} /><Route path="*" element={<NotFound />} /></Route></Routes></>;
 }
