@@ -1,14 +1,18 @@
 import { Link } from 'react-router-dom';
 import { useReadingProgress } from '../hooks/useReadingProgress.js';
 
+const coverClass = (genre) => `cover cover-${genre.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+
 export default function BookCard({ book, saved, onToggle }) {
   const { progress } = useReadingProgress(book.id);
   const completed = progress >= 100;
 
   return (
     <article className="book-card">
-      <Link className="cover" to={`/book/${book.id}`} aria-label={`View ${book.title}`}>
-        <span>{book.title}</span>
+      <Link className={coverClass(book.genre)} to={`/book/${book.id}`} aria-label={`View ${book.title}`}>
+        <span className="cover-genre">{book.genre}</span>
+        <span className="cover-title">{book.title}</span>
+        <span className="cover-author">{book.author}</span>
       </Link>
       <div className="card-body">
         <div className="card-top">
