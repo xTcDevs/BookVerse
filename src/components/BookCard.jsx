@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { getReadingProgress } from '../lib/storage.js';
+import { useReadingProgress } from '../hooks/useReadingProgress.js';
 
 export default function BookCard({ book, saved, onToggle }) {
-  const progress = getReadingProgress(book.id);
+  const { progress } = useReadingProgress(book.id);
   const completed = progress >= 100;
 
   return (
