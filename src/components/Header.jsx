@@ -1,9 +1,19 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Header({ savedCount, dark, onTheme }) {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
   const close = () => setOpen(false);
+
+  useEffect(() => close(), [location.pathname, location.hash]);
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKeyDown = (event) => { if (event.key === 'Escape') close(); };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open]);
+
   return (
     <header className="header">
       <Link className="brand" to="/" onClick={close} aria-label="BookVerse home">Book<span>Verse</span></Link>
@@ -15,7 +25,7 @@ export default function Header({ savedCount, dark, onTheme }) {
       </nav>
       <div className="header-actions">
         <button className="theme" onClick={onTheme} aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'} aria-pressed={dark}>{dark ? '☀' : '◐'}</button>
-        <button className="menu" onClick={() => setOpen(!open)} aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open}>{open ? '×' : '☰'}</button>
+        <button className="menu" onClick={() => setOpen((current) => !current)} aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open}>{open ? '×' : '☰'}</button>
       </div>
     </header>
   );
