@@ -61,6 +61,11 @@ function BookPage() {
   return <main><section className="book-detail"><div className="detail-cover"><span>{book.title}</span></div><div><span className="eyebrow">{book.genre}</span><h1>{book.title}</h1><p className="byline">by <Link to={`/author/${encodeURIComponent(book.author)}`}>{book.author}</Link></p><div className="rating">★★★★★ <span>{book.rating} · {book.ratings}</span></div><p className="description">{book.description}</p><div className="detail-actions"><button className="primary-action" onClick={() => toggle(book.id)}>{saved.includes(book.id) ? '♥ Saved to library' : '♡ Save to library'}</button><button className="secondary-action" onClick={jumpToReader}>{readerLabel}</button><Link className="secondary-action" to="/">← Back to discovery</Link></div>{progress > 0 && <div className="detail-reading-progress"><div><span>{progress}% complete</span><b>{progress >= 100 ? 'Finished' : 'Your reading progress'}</b></div><div className="book-progress-track"><i style={{ width: `${progress}%` }} /></div></div>}<div className="meta"><span><b>{book.year}</b>Published</span><span><b>{book.pages}</b>Pages</span><span><b>English</b>Language</span></div></div></section><section className="preview section"><span className="eyebrow">Free preview</span><h2>A first look inside</h2><p>{book.preview}</p><Reader book={book} /></section></main>;
 }
 
+function getBookProgress(id) {
+  if (typeof window === 'undefined') return 0;
+  try { const value = JSON.parse(window.localStorage.getItem('bookverse-reading-progress') || '{}'); return Number(value[id]) || 0; } catch { return 0; }
+}
+
 function Library() {
   const { saved, toggle, remove, clear, version } = useApp();
   const [query, setQuery] = useState('');
@@ -78,11 +83,6 @@ function Library() {
   const unread = useMemo(() => owned.filter((book) => getBookProgress(book.id) === 0), [owned]);
   const renderGroup = (label, items) => items.length > 0 && <section className="library-group"><div className="library-group-label"><span>{label}</span><b>{items.length}</b></div><div className="book-grid">{items.map((book) => <div className="library-item" key={book.id}><BookCard book={book} saved onToggle={toggle} /><button className="text-action" onClick={() => remove(book.id)}>Remove from library</button></div>)}</div></section>;
   return <main className="section page"><span className="eyebrow">Your collection</span><h1>My Library</h1><p className="description">{saved.length} saved {saved.length === 1 ? 'story' : 'stories'}.</p>{inProgress.length > 0 && <section className="continue-shelf"><div className="section-head"><div><span className="eyebrow">Pick up where you left off</span><h2>Continue reading</h2></div><span className="result-count">{inProgress.length} in progress</span></div><div className="continue-grid">{inProgress.slice(0, 3).map((book) => <Link className="continue-card" to={`/book/${book.id}`} key={book.id}><div><span className="eyebrow">{getBookProgress(book.id)}% read</span><h3>{book.title}</h3><p>{book.author}</p></div><div className="book-progress-track"><i style={{ width: `${getBookProgress(book.id)}%` }} /></div><strong>Continue →</strong></Link>)}</div></section>}<div className="library-controls"><div className="search library-search"><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search your library..." /></div><select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort library"><option value="progress">Reading progress</option><option value="recent">Recently saved</option><option value="title">Title A–Z</option><option value="rating">Highest rated</option><option value="year">Newest</option></select>{saved.length > 0 && <button className="secondary-action" onClick={() => window.confirm('Clear your entire library?') && clear()}>Clear library</button>}</div>{renderGroup('In progress', inProgress)}{renderGroup('Completed', completed)}{renderGroup('Unread', unread)}{!owned.length && <div className="empty"><h3>{saved.length ? 'No matches.' : 'Your library is empty.'}</h3><p>Save a book from discovery and it will appear here.</p></div>}</main>;
-}
-
-function getBookProgress(id) {
-  if (typeof window === 'undefined') return 0;
-  try { const value = JSON.parse(window.localStorage.getItem('bookverse-reading-progress') || '{}'); return Number(value[id]) || 0; } catch { return 0; }
 }
 
 function GenresPage() {
@@ -112,16 +112,20 @@ function AuthorProfile() {
   return <main className="section page"><div className="profile-head"><div className="avatar">{author.split(' ').map((part) => part[0]).join('').slice(0, 2)}</div><div><span className="eyebrow">Author profile</span><h1>{author}</h1><div className="profile-stats"><span><b>{authored.length}</b> books</span><span><b>{average}</b> avg. rating</span><span><b>{readers}</b> readers</span></div></div></div><p className="description">A BookVerse author profile featuring {authored.length === 1 ? 'one story' : `${authored.length} stories`} currently in the collection.</p><section className="section"><div className="section-head"><div><span className="eyebrow">Bibliography</span><h2>Books by {author.split(' ')[0]}</h2></div></div><div className="book-grid">{authored.map((book) => <BookCard key={book.id} book={book} saved={saved.includes(book.id)} onToggle={toggle} />)}</div></section></main>;
 }
 
-function NotFound({ title = 'Page not found.', back = '/' }) { return <main className="section page"><span className="eyebrow">404</span><h1>{title}</h1><p className="description">The page you're looking for doesn't exist.</p><Link className="primary-action" to={back}>Back to BookVerse</Link></main>; }
+function NotFound({ title = 'Page not found.', back = '/' }) { return <main className="section page"><span className="eyebrow">404</span><h1>{title}</h1><p className="description">The page you're looking for doesn't exist.</p><Link className="view-link" to={back}>← Go back</Link></main>; }
 
-export default function App() {
-  const [dark, setDark] = useState(() => getTheme() === 'dark');
-  const { library: saved, savedCount, toggle, remove, clear, version } = useLibrary();
-  const context = useMemo(() => ({ saved, savedCount, toggle, remove, clear, version }), [saved, savedCount, toggle, remove, clear, version]);
-  useEffect(() => saveTheme(dark ? 'dark' : 'light'), [dark]);
-  return <PageShell savedCount={savedCount} dark={dark} onTheme={() => setDark((value) => !value)} context={context} />;
+function AppLayout({ dark, onTheme, context }) {
+  return <PageShell savedCount={context.saved.length} dark={dark} onTheme={onTheme} context={context} />;
 }
 
-export function BookVerseRoutes() {
-  return <><ScrollToHash /><Routes><Route path="/" element={<Home />} /><Route path="/book/:id" element={<BookPage />} /><Route path="/library" element={<Library />} /><Route path="/genres" element={<GenresPage />} /><Route path="/authors" element={<AuthorsPage />} /><Route path="/author/:name" element={<AuthorProfile />} /><Route path="*" element={<NotFound />} /></Routes></>;
+export default function App() {
+  const [dark, setDarkState] = useState(() => getTheme() === 'dark');
+  const setDark = () => setDarkState((current) => {
+    const next = !current;
+    saveTheme(next ? 'dark' : 'light');
+    return next;
+  });
+  const { library: saved, toggle, remove, clear, version } = useLibrary();
+  const context = useMemo(() => ({ saved, toggle, remove, clear, version }), [saved, toggle, remove, clear, version]);
+  return <><ScrollToHash /><Routes><Route element={<AppLayout dark={dark} onTheme={setDark} context={context} />}><Route path="/" element={<Home />} /><Route path="/book/:id" element={<BookPage />} /><Route path="/library" element={<Library />} /><Route path="/genres" element={<GenresPage />} /><Route path="/authors" element={<AuthorsPage />} /><Route path="/author/:name" element={<AuthorProfile />} /><Route path="*" element={<NotFound />} /></Route></Routes></>;
 }
