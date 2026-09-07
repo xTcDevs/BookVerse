@@ -47,6 +47,9 @@ export function saveReadingProgress(bookId, value) {
   const next = typeof progress === 'object' && progress !== null ? progress : {};
   next[bookId] = Math.max(0, Math.min(100, Math.round(value)));
   writeJSON(STORAGE_KEYS.progress, next);
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('bookverse:progress', { detail: { bookId, value: next[bookId] } }));
+  }
 }
 
 export function getReaderPreferences() {
