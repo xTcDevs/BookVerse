@@ -5,6 +5,7 @@ import BookCard from './components/BookCard.jsx';
 import Reader from './components/Reader.jsx';
 import PageShell from './layouts/PageShell.jsx';
 import { getReadingProgress, getTheme, saveTheme } from './lib/storage.js';
+import { useDebouncedValue } from './hooks/useDebouncedValue.js';
 import { useLibrary } from './hooks/useLibrary.js';
 
 const getBook = (id) => books.find((book) => book.id === id);
@@ -16,7 +17,8 @@ function Home() {
   const { saved, toggle } = useApp();
   const [query, setQuery] = useState('');
   const [genre, setGenre] = useState('All');
-  const filtered = useMemo(() => books.filter((book) => (genre === 'All' || book.genre === genre) && `${book.title} ${book.author} ${book.genre}`.toLowerCase().includes(query.toLowerCase())), [query, genre]);
+  const search = useDebouncedValue(query);
+  const filtered = useMemo(() => books.filter((book) => (genre === 'All' || book.genre === genre) && `${book.title} ${book.author} ${book.genre}`.toLowerCase().includes(search.toLowerCase())), [search, genre]);
   const recommended = useMemo(() => {
     if (!saved.length) return books.filter((book) => book.rating >= 4.8).slice(0, 3);
     const savedGenres = saved.map((id) => getBook(id)?.genre).filter(Boolean);
@@ -37,33 +39,37 @@ function BookPage() {
   const { saved, toggle } = useApp();
   const { id } = useParams();
   const book = getBook(id);
+  const progress = book ? getReadingProgress(book.id) : 0;
   if (!book) return <NotFound />;
-  return <main><section className="book-detail"><div className="detail-cover"><span>{book.title}</span></div><div><span className="eyebrow">{book.genre}</span><h1>{book.title}</h1><p className="byline">by <Link to={`/author/${encodeURIComponent(book.author)}`}>{book.author}</Link></p><div className="rating">★★★★★ <span>{book.rating} · {book.ratings}</span></div><p className="description">{book.description}</p><div className="detail-actions"><button className="primary-action" onClick={() => toggle(book.id)}>{saved.includes(book.id) ? '♥ Saved to library' : '♡ Save to library'}</button><Link className="secondary-action" to="/">← Back to discovery</Link></div><div className="meta"><span><b>{book.year}</b>Published</span><span><b>{book.pages}</b>Pages</span><span><b>English</b>Language</span></div></div></section><section className="preview section"><span className="eyebrow">Free preview</span><h2>A first look inside</h2><p>{book.preview}</p><Reader book={book} /></section></main>;
+  const readerLabel = progress >= 100 ? 'Read again' : progress > 0 ? `Continue reading · ${progress}%` : 'Start free preview';
+  const jumpToReader = () => document.querySelector('.reader')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  return <main><section className="book-detail"><div className="detail-cover"><span>{book.title}</span></div><div><span className="eyebrow">{book.genre}</span><h1>{book.title}</h1><p className="byline">by <Link to={`/author/${encodeURIComponent(book.author)}`}>{book.author}</Link></p><div className="rating">★★★★★ <span>{book.rating} · {book.ratings}</span></div><p className="description">{book.description}</p><div className="detail-actions"><button className="primary-action" onClick={() => toggle(book.id)}>{saved.includes(book.id) ? '♥ Saved to library' : '♡ Save to library'}</button><button className="secondary-action" onClick={jumpToReader}>{readerLabel}</button><Link className="secondary-action" to="/">← Back to discovery</Link></div>{progress > 0 && <div className="detail-reading-progress"><div><span>{progress}% complete</span><b>{progress >= 100 ? 'Finished' : 'Your reading progress'}</b></div><div className="book-progress-track"><i style={{ width: `${progress}%` }} /></div></div>}<div className="meta"><span><b>{book.year}</b>Published</span><span><b>{book.pages}</b>Pages</span><span><b>English</b>Language</span></div></div></section><section className="preview section"><span className="eyebrow">Free preview</span><h2>A first look inside</h2><p>{book.preview}</p><Reader book={book} /></section></main>;
 }
 
 function Library() {
   const { saved, toggle, remove, clear } = useApp();
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState('progress');
-  const owned = useMemo(() => books.filter((book) => saved.includes(book.id) && `${book.title} ${book.author} ${book.genre}`.toLowerCase().includes(query.toLowerCase())).sort((a, b) => {
+  const search = useDebouncedValue(query);
+  const owned = useMemo(() => books.filter((book) => saved.includes(book.id) && `${book.title} ${book.author} ${book.genre}`.toLowerCase().includes(search.toLowerCase())).sort((a, b) => {
     if (sort === 'title') return a.title.localeCompare(b.title);
     if (sort === 'rating') return b.rating - a.rating;
     if (sort === 'year') return b.year - a.year;
     if (sort === 'progress') return getReadingProgress(b.id) - getReadingProgress(a.id);
     return saved.indexOf(a.id) - saved.indexOf(b.id);
-  }), [saved, query, sort]);
+  }), [saved, search, sort]);
   const inProgress = owned.filter((book) => { const progress = getReadingProgress(book.id); return progress > 0 && progress < 100; });
   const completed = owned.filter((book) => getReadingProgress(book.id) >= 100);
   const unread = owned.filter((book) => getReadingProgress(book.id) === 0);
+  const renderGroup = (label, items) => items.length > 0 && <section className="library-group"><div className="library-group-label"><span>{label}</span><b>{items.length}</b></div><div className="book-grid">{items.map((book) => <div className="library-item" key={book.id}><BookCard book={book} saved onToggle={toggle} /><button className="text-action" onClick={() => remove(book.id)}>Remove from library</button></div>)}</div></section>;
 
   return <main className="section page">
     <span className="eyebrow">Your collection</span><h1>My Library</h1><p className="description">{saved.length} saved {saved.length === 1 ? 'story' : 'stories'}.</p>
     {inProgress.length > 0 && <section className="continue-shelf"><div className="section-head"><div><span className="eyebrow">Pick up where you left off</span><h2>Continue reading</h2></div><span className="result-count">{inProgress.length} in progress</span></div><div className="continue-grid">{inProgress.slice(0, 3).map((book) => <Link className="continue-card" to={`/book/${book.id}`} key={book.id}><div><span className="eyebrow">{getReadingProgress(book.id)}% read</span><h3>{book.title}</h3><p>{book.author}</p></div><div className="book-progress-track"><i style={{ width: `${getReadingProgress(book.id)}%` }} /></div><strong>Continue →</strong></Link>)}</div></section>}
     <div className="library-controls"><div className="search library-search"><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search your library..." /></div><select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort library"><option value="progress">Reading progress</option><option value="recent">Recently saved</option><option value="title">Title A–Z</option><option value="rating">Highest rated</option><option value="year">Newest</option></select>{saved.length > 0 && <button className="secondary-action" onClick={() => window.confirm('Clear your entire library?') && clear()}>Clear library</button>}</div>
-    {inProgress.length > 0 && <div className="library-group-label"><span>In progress</span><b>{inProgress.length}</b></div>}
-    {completed.length > 0 && <div className="library-group-label"><span>Completed</span><b>{completed.length}</b></div>}
-    {unread.length > 0 && <div className="library-group-label"><span>Unread</span><b>{unread.length}</b></div>}
-    <div className="book-grid">{owned.map((book) => <div className="library-item" key={book.id}><BookCard book={book} saved onToggle={toggle} /><button className="text-action" onClick={() => remove(book.id)}>Remove from library</button></div>)}</div>
+    {renderGroup('In progress', inProgress)}
+    {renderGroup('Completed', completed)}
+    {renderGroup('Unread', unread)}
     {!owned.length && <div className="empty"><h3>{saved.length ? 'No matches.' : 'Your library is empty.'}</h3><p>Save a book from discovery and it will appear here.</p></div>}
   </main>;
 }
@@ -79,8 +85,9 @@ function GenresPage() {
 
 function AuthorsPage() {
   const [query, setQuery] = useState('');
-  const authors = getAuthors().filter((author) => author.toLowerCase().includes(query.toLowerCase()));
-  return <main className="section page"><span className="eyebrow">Meet the writers</span><h1>Authors</h1><p className="description">Explore the writers behind the stories in the BookVerse collection.</p><div className="search library-search"><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search authors..." /></div><div className="author-row">{authors.map((author) => { const authored = books.filter((book) => book.author === author); const average = (authored.reduce((sum, book) => sum + book.rating, 0) / authored.length).toFixed(1); return <Link to={`/author/${encodeURIComponent(author)}`} key={author}><strong>{author}</strong><span>{authored.length} {authored.length === 1 ? 'book' : 'books'} · {average} avg. rating</span><span>View profile →</span></Link>; })}</div></main>;
+  const search = useDebouncedValue(query);
+  const authors = getAuthors().filter((author) => author.toLowerCase().includes(search.toLowerCase()));
+  return <main className="section page"><span className="eyebrow">Meet the writers</span><h1>Authors</h1><p className="description">Explore the writers behind the stories in the BookVerse collection.</p><div className="search library-search"><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search authors..." /></div><div className="author-row">{authors.map((author) => { const authored = books.filter((book) => book.author === author); const average = (authored.reduce((sum, book) => sum + book.rating, 0) / authored.length).toFixed(1); return <Link to={`/author/${encodeURIComponent(author)}`} key={author}><strong>{author}</strong><span>{authored.length} {authored.length === 1 ? 'book' : 'books'} · {average} avg. rating</span><span>View profile →</span></Link>; })}</div>{!authors.length && <div className="empty"><h3>No authors found.</h3><p>Try another name.</p></div>}</main>;
 }
 
 function AuthorProfile() {
