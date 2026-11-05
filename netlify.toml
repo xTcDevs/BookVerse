@@ -1,0 +1,40 @@
+# BookVerse on Netlify: a fully pre-rendered site (no server functions).
+# Only public values reach the browser. Set in Netlify's environment settings:
+#   VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY, VITE_SITE_URL
+# Never add a Supabase secret key here or in Netlify's VITE_ variables.
+
+[build]
+  command = "npm run build && npm run check:secrets"
+  publish = "build/client"
+
+[build.environment]
+  NODE_VERSION = "22.20.0"
+
+# Unknown paths get the 404 page with a real 404 status (Netlify serves
+# 404.html automatically). Client-side routes that were not pre-rendered fall
+# back to the app shell.
+[[redirects]]
+  from = "/settings/*"
+  to = "/__spa-fallback.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Content-Security-Policy = "frame-ancestors 'none'; object-src 'none'; base-uri 'self'"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

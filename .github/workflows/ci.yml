@@ -6,20 +6,84 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  app:
+    name: Typecheck, lint, test, build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
         with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm test
       - name: Build
         run: npm run build
+        env:
+          # Public values only (safe in the browser). Netlify holds the same ones.
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SITE_URL: https://bookverse.netlify.app
+      - name: No private credentials in the bundle
+        run: npm run check:secrets
+      - name: Dependency audit (production)
+        run: npm audit --omit=dev --audit-level=high
+      - name: Secret scan of the repository history
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: build/client
+          retention-days: 7
+
+  e2e:
+    name: Browser tests
+    needs: app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: build/client
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
+
+  database:
+    name: Database security tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.122.1
+      - name: Start a local Supabase (database only)
+        run: supabase start -x studio,imgproxy,inbucket,mailpit,realtime,edge-runtime,logflare,vector,supavisor,postgres-meta
+      - name: Apply migrations and run pgTAP tests
+        run: supabase test db
