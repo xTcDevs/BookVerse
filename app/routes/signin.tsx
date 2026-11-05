@@ -117,7 +117,7 @@ export default function SignIn() {
         ) : (
           <form className="auth-card" onSubmit={verify}>
             <p className="lede">
-              We sent an email to {step.email}. Open its sign-in link in this browser and you’re in; this page updates
+              We sent an email to {step.email}. Open its sign-in link on any device; in this browser, this page updates
               by itself. If your email shows a code instead, enter it here.
             </p>
             <div className="field">
