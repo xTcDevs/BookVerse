@@ -28,6 +28,8 @@ function decodeJwtPayload(value: string): string {
 }
 
 export default defineConfig(({ mode }) => {
+  // On Netlify, default the canonical site address to the deploy's own URL.
+  if (!process.env.VITE_SITE_URL && process.env.URL) process.env.VITE_SITE_URL = process.env.URL;
   guardPublicEnv(mode);
   return {
     plugins: [reactRouter()],

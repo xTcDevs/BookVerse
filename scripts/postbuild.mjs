@@ -26,7 +26,7 @@ for (const file of ['.env', '.env.local', '.env.production', '.env.production.lo
     if (m && process.env[m[1]] === undefined) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
   }
 }
-const SITE_URL = (process.env.VITE_SITE_URL || process.env.URL || 'https://bookverse.netlify.app').replace(/\/$/, '');
+const SITE_URL = (process.env.VITE_SITE_URL || process.env.URL || 'https://bookverse-1.netlify.app').replace(/\/$/, '');
 
 function supabaseOrigin() {
   const raw = process.env.VITE_SUPABASE_URL;

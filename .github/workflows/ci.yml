@@ -39,7 +39,7 @@ jobs:
           # accounts switched off, which the tests also cover. Never a secret key.
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
-          VITE_SITE_URL: https://bookverse.netlify.app
+          VITE_SITE_URL: https://bookverse-1.netlify.app
       - name: No private credentials in the bundle
         run: npm run check:secrets
       - name: Dependency audit (production)

@@ -40,6 +40,6 @@ export const SITE_NAME = 'BookVerse';
 export function siteUrl(): string {
   const config = publicConfig();
   return (
-    (config.status === 'ready' && config.siteUrl) || import.meta.env.VITE_SITE_URL || 'https://bookverse.netlify.app'
+    (config.status === 'ready' && config.siteUrl) || import.meta.env.VITE_SITE_URL || 'https://bookverse-1.netlify.app'
   );
 }
