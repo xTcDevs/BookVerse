@@ -1,7 +1,19 @@
 node_modules/
-dist/
+build/
+.react-router/
 .vite/
+coverage/
+playwright-report/
+test-results/
+.lighthouseci/
 .DS_Store
+.cto-toolkit/
+
+# Environment files hold real credentials and are never committed.
 .env
 .env.*
 !.env.example
+
+# Supabase local stack state
+supabase/.branches/
+supabase/.temp/
