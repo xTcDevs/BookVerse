@@ -65,10 +65,15 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - uses: actions/download-artifact@v4
-        with:
-          name: site
-          path: build/client
+      - name: Build with placeholder account settings
+        # A dedicated build so pages that depend on accounts render the way they
+        # do in production. Placeholders only: signed-out pages make no network
+        # calls, and nothing here is a credential.
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: https://e2e-placeholder.supabase.co
+          VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_e2e_placeholder
+          VITE_SITE_URL: https://bookverse-1.netlify.app
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
       - uses: actions/upload-artifact@v4
