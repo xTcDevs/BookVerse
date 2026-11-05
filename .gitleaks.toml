@@ -1,0 +1,10 @@
+# gitleaks: the default rules, plus one exception for a made-up value.
+# The browser-test build in .github/workflows/ci.yml uses a placeholder
+# Supabase key that is not a credential. Only that exact string is allowed;
+# every other match still fails CI.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Placeholder Supabase key used only by the CI browser-test build"
+regexes = ['''sb_publishable_e2e_placeholder''']
