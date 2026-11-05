@@ -18,7 +18,11 @@ export function getSupabase(): BookverseClient | null {
   client =
     config.status === 'ready'
       ? createClient<Database>(config.supabaseUrl, config.supabaseKey, {
-          auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' },
+          // Implicit flow: an emailed sign-in link works in whichever browser or
+          // device opens it (PKCE links only work in the browser that asked).
+          // Fine for a fully client-side site; supabase-js clears the tokens
+          // from the URL as soon as it reads them.
+          auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'implicit' },
         })
       : null;
   return client;
