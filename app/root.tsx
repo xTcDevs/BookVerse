@@ -1,8 +1,9 @@
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, Link } from 'react-router';
 import type { Route } from './+types/root';
 import { buildThemeCss, themes } from './design/tokens';
 import { AuthProvider } from './lib/auth';
+import { HYDRATED_EVENT } from './lib/host-injections';
 import { themeBootstrapScript } from './lib/prefs/bootstrap';
 import { PreferencesRuntime } from './lib/prefs/provider';
 import fontsHref from './styles/fonts.css?url';
@@ -50,6 +51,11 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
+  // Runs once React has hydrated: entry.client puts host-added nodes back then.
+  useEffect(() => {
+    window.dispatchEvent(new Event(HYDRATED_EVENT));
+  }, []);
+
   return (
     <PreferencesRuntime>
       <AuthProvider>

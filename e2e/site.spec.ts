@@ -111,3 +111,33 @@ test.describe('accessibility', () => {
     });
   }
 });
+
+test.describe('hosting', () => {
+  // Netlify's free tier edits the HTML after the build (a comment in <head>, a
+  // toolbar script after </html> that adds a badge). Hydration must survive it.
+  test('pages hydrate cleanly with Netlify-injected markup, and the badge is kept', async ({ page }) => {
+    const errors = trackErrors(page);
+    await page.route('**/.netlify/scripts/hud*', (route) =>
+      route.fulfill({
+        contentType: 'text/javascript',
+        body: "var f=document.createElement('iframe');f.id='nl-badge-frame';document.body.appendChild(f);",
+      }),
+    );
+    await page.route(/\/(settings\/account|book\/frankenstein)?\/?$/, async (route) => {
+      const response = await route.fetch();
+      let html = await response.text();
+      html = html.replace(
+        '<meta charSet="utf-8"/>',
+        '<meta charSet="utf-8"/>\n<!-- This site is hosted on Netlify. -->\n',
+      );
+      html += '<script async src="/.netlify/scripts/hud?variant=public"></script>\n';
+      await route.fulfill({ response, body: html });
+    });
+    for (const path of ['/', '/settings/account', '/book/frankenstein']) {
+      await page.goto(path);
+      await page.waitForLoadState('networkidle');
+      await expect(page.locator('#nl-badge-frame')).toHaveCount(1);
+    }
+    expect(errors).toEqual([]);
+  });
+});
