@@ -58,12 +58,17 @@ function inlineScriptHashes(html) {
   return [...new Set(hashes)];
 }
 
+// Inline script inside Netlify's free-tier "Powered by Netlify" badge (a srcdoc
+// iframe, which inherits this page's CSP). Allowed by exact hash only; if
+// Netlify changes it, the badge just loses its auto-sizing, nothing else.
+const HOST_INLINE_SCRIPT_HASHES = ["'sha256-BkKP2XO6WOEc3kXOiLr2ZoY83hamalKjPY9xBcbXVuw='"];
+
 function cspFor(html, supabase) {
   const connect = ["'self'", ...(supabase ? [supabase, supabase.replace(/^https:/, 'wss:')] : [])];
   const images = ["'self'", 'data:', 'blob:', ...(supabase ? [supabase] : [])];
   return [
     "default-src 'self'",
-    `script-src 'self' ${inlineScriptHashes(html).join(' ')}`.trim(),
+    `script-src 'self' ${[...inlineScriptHashes(html), ...HOST_INLINE_SCRIPT_HASHES].join(' ')}`,
     "style-src 'self' 'unsafe-inline'",
     `img-src ${images.join(' ')}`,
     "font-src 'self'",
