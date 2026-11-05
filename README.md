@@ -35,6 +35,14 @@ Only **public** values go to the browser, and only with the `VITE_` prefix:
 
 The Supabase **secret key** (`sb_secret_…` / `service_role`) is never used by the site. Only Supabase Edge Functions use it, and Supabase injects it at runtime. The build refuses to run if a `VITE_` variable looks like a secret, and CI scans the output and the git history.
 
+## Supabase project settings (dashboard only)
+
+These can't be set from migrations; check them on any new project:
+
+- **Integrations → Data API → Enable Data API: on**, with the `public` schema exposed. When it's off, every database call returns `503 PGRST002`.
+- **Authentication → URL Configuration**: Site URL `https://bookverse-1.netlify.app`; redirect URLs `https://bookverse-1.netlify.app/**`, `https://*--bookverse-1.netlify.app/**`, `http://localhost:5173/**`, `http://localhost:4173/**`.
+- **Emails**: the built-in mailer sends at most 2 emails an hour, only to the project's team members, using Supabase's default link email. Public sign-up needs custom SMTP (then the sign-in template can include `{{ .Token }}` for the 6-digit code).
+
 ## Layout
 
 ```
