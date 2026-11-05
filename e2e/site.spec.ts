@@ -141,3 +141,13 @@ test.describe('hosting', () => {
     expect(errors).toEqual([]);
   });
 });
+
+test.describe('sign-in links', () => {
+  test('an expired emailed link explains itself instead of failing silently', async ({ page }) => {
+    await page.goto(
+      '/settings/account#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid+or+has+expired',
+    );
+    await expect(page.getByRole('alert')).toContainText('expired or was already used');
+    await expect(page).toHaveURL(/\/settings\/account\/?$/);
+  });
+});

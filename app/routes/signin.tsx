@@ -17,7 +17,7 @@ export const meta: Route.MetaFunction = () =>
 type Step = { kind: 'email' } | { kind: 'code'; email: string } | { kind: 'busy'; email?: string };
 
 export default function SignIn() {
-  const { state } = useAuth();
+  const { state, linkError } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState<Step>({ kind: 'email' });
   const [error, setError] = useState<string | null>(null);
@@ -142,6 +142,11 @@ export default function SignIn() {
               </button>
             </div>
           </form>
+        )}
+        {!error && linkError && step.kind === 'email' && (
+          <p className="notice notice--error" role="alert">
+            {linkError}
+          </p>
         )}
         {error && (
           <p className="notice notice--error" role="alert">

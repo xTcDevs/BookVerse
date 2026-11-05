@@ -35,3 +35,23 @@ export function profileErrorMessage(error: unknown): string {
   if (e.code === '23514') return 'One of the fields isn’t in the right format.';
   return 'Your profile couldn’t be saved. Please try again.';
 }
+
+/**
+ * When an emailed sign-in link fails, Supabase redirects back with the error in
+ * the URL (#error=…&error_code=…). Returns a readable message, or null.
+ */
+export function linkErrorFromUrl(href: string): string | null {
+  let url: URL;
+  try {
+    url = new URL(href);
+  } catch {
+    return null;
+  }
+  const params = new URLSearchParams(url.hash.replace(/^#/, ''));
+  for (const [key, value] of url.searchParams) if (!params.has(key)) params.set(key, value);
+  const code = params.get('error_code');
+  if (!code && !params.get('error')) return null;
+  if (code === 'otp_expired')
+    return 'That sign-in link has expired or was already used. Each new email replaces the previous link, so request a fresh one and use the newest email.';
+  return 'That sign-in link didn’t work. Please request a new one.';
+}

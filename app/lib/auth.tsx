@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { User } from '@supabase/supabase-js';
 import type { Database } from './database.types';
+import { linkErrorFromUrl } from './auth-errors';
 import { PreferenceSync, type SyncStatus } from './prefs/sync';
 import { getSupabase } from './supabase';
 
@@ -15,6 +16,8 @@ export type AuthState =
 interface AuthContextValue {
   state: AuthState;
   sync: SyncStatus;
+  /** Why an emailed sign-in link failed, if the visitor just arrived from one. */
+  linkError: string | null;
   refreshProfile: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -24,6 +27,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({ status: 'loading' });
   const [sync, setSync] = useState<SyncStatus>({ state: 'off' });
+  const [linkError, setLinkError] = useState<string | null>(null);
 
   const loadProfile = useCallback(async (user: User) => {
     const supabase = getSupabase();
@@ -33,6 +37,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    // Read a failed-link error before the Supabase client tidies the URL.
+    const failedLink = linkErrorFromUrl(window.location.href);
+    if (failedLink) {
+      setLinkError(failedLink);
+      window.history.replaceState(window.history.state, '', window.location.pathname);
+    }
     const supabase = getSupabase();
     if (!supabase) {
       setState({ status: 'unavailable' });
@@ -50,6 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setState({ status: 'signed-out' });
         return;
       }
+      setLinkError(null);
       setState({ status: 'signed-in', user, profile: null });
       void loadProfile(user);
       syncer = new PreferenceSync(supabase, user.id);
@@ -77,7 +88,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (supabase) await supabase.auth.signOut();
   }, []);
 
-  const value = useMemo(() => ({ state, sync, refreshProfile, signOut }), [state, sync, refreshProfile, signOut]);
+  const value = useMemo(
+    () => ({ state, sync, linkError, refreshProfile, signOut }),
+    [state, sync, linkError, refreshProfile, signOut],
+  );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

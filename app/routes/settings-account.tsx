@@ -244,7 +244,7 @@ function DeleteAccount() {
 }
 
 export default function AccountSettings() {
-  const { state, signOut, refreshProfile } = useAuth();
+  const { state, signOut, refreshProfile, linkError } = useAuth();
 
   if (state.status === 'loading') {
     return <p className="muted">Checking your account…</p>;
@@ -264,6 +264,11 @@ export default function AccountSettings() {
     return (
       <section className="settings-group">
         <h2>Account</h2>
+        {linkError && (
+          <p className="notice notice--error" role="alert">
+            {linkError}
+          </p>
+        )}
         <p className="lede">
           Sign in to keep your settings on every device, and to be ready for shelves, reviews and writing as they
           arrive.
