@@ -4,6 +4,7 @@ import type { Route } from './+types/settings-account';
 import { Switch } from '~/components/controls';
 import { useAuth, type Profile } from '~/lib/auth';
 import { profileErrorMessage } from '~/lib/auth-errors';
+import { AvatarError, prepareAvatar } from '~/lib/avatar';
 import { buildMeta } from '~/lib/seo';
 import { AVATAR_BUCKET, avatarUrl, getSupabase } from '~/lib/supabase';
 import { SyncLine } from './settings';
@@ -17,8 +18,6 @@ export const meta: Route.MetaFunction = () =>
   });
 
 const HANDLE = /^[a-z0-9_]{3,30}$/;
-const AVATAR_TYPES: Record<string, string> = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp' };
-const AVATAR_MAX_BYTES = 2 * 1024 * 1024;
 
 type Status = { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved' } | { kind: 'error'; message: string };
 
@@ -133,8 +132,9 @@ function AvatarField({
   profile: Profile | null;
   onSaved: () => Promise<void>;
 }) {
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<{ text: string; error: boolean } | null>(null);
   const [busy, setBusy] = useState(false);
+  const fail = (text: string) => setMessage({ text, error: true });
   const url = avatarUrl(profile?.avatar_path ?? null, profile?.updated_at);
   const initial = (profile?.display_name ?? '?').charAt(0).toUpperCase();
 
@@ -142,26 +142,29 @@ function AvatarField({
     const file = e.target.files?.[0];
     e.target.value = '';
     if (!file) return;
-    const ext = AVATAR_TYPES[file.type];
-    if (!ext) return setMessage('Please choose a PNG, JPEG or WebP image.');
-    if (file.size > AVATAR_MAX_BYTES) return setMessage('Please choose an image under 2 MB.');
     const supabase = getSupabase();
     if (!supabase) return;
     setBusy(true);
     setMessage(null);
-    const path = `${userId}/avatar.${ext}`;
-    const { error: uploadError } = await supabase.storage
-      .from(AVATAR_BUCKET)
-      .upload(path, file, { upsert: true, contentType: file.type, cacheControl: '3600' });
-    if (uploadError) {
+    try {
+      const photo = await prepareAvatar(file);
+      const path = `${userId}/avatar.${photo.ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from(AVATAR_BUCKET)
+        .upload(path, photo.blob, { upsert: true, contentType: photo.type, cacheControl: '3600' });
+      if (uploadError) return fail('The photo couldn’t be uploaded. Please try again.');
+      const { error: profileError } = await supabase.from('profiles').update({ avatar_path: path }).eq('id', userId);
+      if (profileError) return fail('The photo uploaded, but your profile couldn’t be updated. Please try again.');
+      // Best effort: remove an older photo saved under another file type.
+      const stale = ['jpg', 'png', 'webp'].filter((ext) => ext !== photo.ext).map((ext) => `${userId}/avatar.${ext}`);
+      void supabase.storage.from(AVATAR_BUCKET).remove(stale);
+      await onSaved();
+      setMessage({ text: 'Photo updated.', error: false });
+    } catch (error) {
+      fail(error instanceof AvatarError ? error.message : 'The photo couldn’t be uploaded. Please try again.');
+    } finally {
       setBusy(false);
-      return setMessage('The image couldn’t be uploaded. Please try again.');
     }
-    const { error: profileError } = await supabase.from('profiles').update({ avatar_path: path }).eq('id', userId);
-    setBusy(false);
-    if (profileError) return setMessage('The image uploaded, but your profile couldn’t be updated. Please try again.');
-    await onSaved();
-    setMessage('Photo updated.');
   };
 
   return (
@@ -172,17 +175,17 @@ function AvatarField({
       <div className="field">
         <label className="button button--small" style={{ cursor: busy ? 'progress' : 'pointer' }}>
           {busy ? 'Uploading…' : 'Change photo'}
-          <input
-            type="file"
-            accept="image/png,image/jpeg,image/webp"
-            className="visually-hidden"
-            onChange={upload}
-            disabled={busy}
-          />
+          <input type="file" accept="image/*" className="visually-hidden" onChange={upload} disabled={busy} />
         </label>
-        <span className="field-hint" role="status">
-          {message ?? 'PNG, JPEG or WebP, up to 2 MB.'}
-        </span>
+        {message?.error ? (
+          <p className="notice notice--error" role="alert">
+            {message.text}
+          </p>
+        ) : (
+          <span className="field-hint" role="status">
+            {message?.text ?? 'Any photo. It’s resized on your device before upload.'}
+          </span>
+        )}
       </div>
     </div>
   );
