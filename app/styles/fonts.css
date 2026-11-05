@@ -1,0 +1,11 @@
+/* Self-hosted fonts (no third-party requests). Browsers download a face only
+   when text actually uses it, so reading fonts cost nothing until chosen. */
+@import '@fontsource-variable/newsreader/opsz.css';
+@import '@fontsource-variable/newsreader/opsz-italic.css';
+@import '@fontsource-variable/inter/index.css';
+@import '@fontsource-variable/literata/index.css';
+@import '@fontsource-variable/literata/wght-italic.css';
+@import '@fontsource-variable/source-serif-4/index.css';
+@import '@fontsource/atkinson-hyperlegible/400.css';
+@import '@fontsource/atkinson-hyperlegible/700.css';
+@import '@fontsource/opendyslexic/400.css';
