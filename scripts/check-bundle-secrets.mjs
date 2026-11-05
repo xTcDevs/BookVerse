@@ -7,10 +7,10 @@ import { join } from 'node:path';
 const root = process.argv[2] || 'build/client';
 const TEXT = /\.(html|js|mjs|css|json|txt|xml|webmanifest|map)$/;
 
-async function files(dir) {
+async function listFiles(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   const nested = await Promise.all(
-    entries.map((e) => (e.isDirectory() ? files(join(dir, e.name)) : [join(dir, e.name)])),
+    entries.map((e) => (e.isDirectory() ? listFiles(join(dir, e.name)) : [join(dir, e.name)])),
   );
   return nested.flat();
 }
@@ -27,7 +27,7 @@ function jwtRole(token) {
 
 async function main() {
   const problems = [];
-  for (const file of await files(root)) {
+  for (const file of await listFiles(root)) {
     if (!TEXT.test(file)) continue;
     const text = await readFile(file, 'utf8');
     if (/sb_secret_[A-Za-z0-9_-]{8,}/.test(text)) problems.push(`${file}: contains a Supabase secret key`);

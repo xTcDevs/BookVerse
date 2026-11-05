@@ -14,7 +14,14 @@ const OUT = 'build/client';
 // (CI and Netlify pass them as real environment variables instead).
 for (const file of ['.env', '.env.local', '.env.production', '.env.production.local']) {
   if (!existsSync(file)) continue;
-  for (const line of readFileSync(file, 'utf8').split('\n')) {
+  let text = '';
+  try {
+    text = readFileSync(file, 'utf8');
+  } catch (error) {
+    console.warn(`postbuild: could not read ${file} (${error.code ?? error.message}); skipping it`);
+    continue;
+  }
+  for (const line of text.split('\n')) {
     const m = line.match(/^\s*(VITE_[A-Z0-9_]+)\s*=\s*(.*?)\s*$/);
     if (m && process.env[m[1]] === undefined) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
   }

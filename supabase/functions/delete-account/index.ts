@@ -29,6 +29,18 @@ function json(body: unknown, status: number, origin: string | null) {
 
 Deno.serve(async (req) => {
   const origin = req.headers.get('Origin');
+  try {
+    return await handle(req, origin);
+  } catch (error) {
+    // Any unexpected failure (environment, network, SDK) returns a clean 500;
+    // the account is only deleted as the very last step, so nothing is half-done.
+    console.error('delete-account: unexpected error', error instanceof Error ? error.message : String(error));
+    return json({ error: 'delete_failed' }, 500, origin);
+  }
+});
+
+// The request body is never read: the caller is identified only by their JWT.
+async function handle(req: Request, origin: string | null): Promise<Response> {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders(origin) });
   if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, 405, origin);
 
@@ -67,4 +79,4 @@ Deno.serve(async (req) => {
     return json({ error: 'delete_failed' }, 500, origin);
   }
   return json({ deleted: true }, 200, origin);
-});
+}
