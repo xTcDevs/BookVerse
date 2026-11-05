@@ -9,7 +9,7 @@ import { getSupabase } from '~/lib/supabase';
 export const meta: Route.MetaFunction = () =>
   buildMeta({
     title: 'Sign in',
-    description: 'Sign in to BookVerse with a one-time code.',
+    description: 'Sign in to BookVerse with a one-time email link.',
     path: '/signin',
     noindex: true,
   });
@@ -97,7 +97,7 @@ export default function SignIn() {
         <h1>{step.kind === 'code' ? 'Check your email' : 'Welcome to BookVerse'}</h1>
         {step.kind !== 'code' ? (
           <form className="auth-card" onSubmit={sendCode} noValidate={false}>
-            <p className="lede">We’ll email you a 6-digit code. No password to remember.</p>
+            <p className="lede">We’ll email you a one-time sign-in link. No password to remember.</p>
             <div className="field">
               <label htmlFor="email">Email address</label>
               <input
@@ -111,16 +111,17 @@ export default function SignIn() {
               />
             </div>
             <button className="button button--primary" type="submit" disabled={step.kind === 'busy'}>
-              {step.kind === 'busy' ? 'Sending…' : 'Email me a code'}
+              {step.kind === 'busy' ? 'Sending…' : 'Email me a sign-in link'}
             </button>
           </form>
         ) : (
           <form className="auth-card" onSubmit={verify}>
             <p className="lede">
-              We sent a code to {step.email}. It expires in an hour. You can also use the link in the email.
+              We sent an email to {step.email}. Open its sign-in link in this browser and you’re in; this page updates
+              by itself. If your email shows a code instead, enter it here.
             </p>
             <div className="field">
-              <label htmlFor="code">6-digit code</label>
+              <label htmlFor="code">Code from the email (if it has one)</label>
               <input
                 className="input code-input"
                 id="code"
