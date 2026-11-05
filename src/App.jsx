@@ -76,7 +76,7 @@ function Library() {
     if (sort === 'rating') return b.rating - a.rating;
     if (sort === 'year') return b.year - a.year;
     if (sort === 'progress') return getBookProgress(b.id) - getBookProgress(a.id);
-    return saved.indexOf(a.id) - saved.indexOf(b.id);
+    return saved.indexOf(b.id) - saved.indexOf(a.id);
   }), [saved, search, sort, version]);
   const inProgress = useMemo(() => owned.filter((book) => { const progress = getBookProgress(book.id); return progress > 0 && progress < 100; }), [owned]);
   const completed = useMemo(() => owned.filter((book) => getBookProgress(book.id) >= 100), [owned]);
