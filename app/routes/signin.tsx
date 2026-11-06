@@ -14,7 +14,11 @@ export const meta: Route.MetaFunction = () =>
     noindex: true,
   });
 
-type Step = { kind: 'email' } | { kind: 'code'; email: string } | { kind: 'busy'; email?: string };
+type Step =
+  | { kind: 'email' }
+  | { kind: 'sending'; email: string }
+  | { kind: 'code'; email: string }
+  | { kind: 'verifying'; email: string };
 
 export default function SignIn() {
   const { state, linkError } = useAuth();
@@ -59,7 +63,7 @@ export default function SignIn() {
     const supabase = getSupabase();
     if (!supabase || !email) return;
     setError(null);
-    setStep({ kind: 'busy', email });
+    setStep({ kind: 'sending', email });
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email,
       options: { shouldCreateUser: true, emailRedirectTo: `${window.location.origin}/settings/account` },
@@ -80,7 +84,7 @@ export default function SignIn() {
     if (!supabase) return;
     setError(null);
     const email = step.email;
-    setStep({ kind: 'busy', email });
+    setStep({ kind: 'verifying', email });
     const { error: verifyError } = await supabase.auth.verifyOtp({ email, token, type: 'email' });
     if (verifyError) {
       setError(authErrorMessage(verifyError));
@@ -90,13 +94,15 @@ export default function SignIn() {
     navigate('/settings/account', { replace: true });
   };
 
+  const showingCode = step.kind === 'code' || step.kind === 'verifying';
+
   return (
     <main id="main" className="container page">
       <div className="auth-card">
         <p className="eyebrow">Sign in or create an account</p>
-        <h1>{step.kind === 'code' ? 'Check your email' : 'Welcome to BookVerse'}</h1>
-        {step.kind !== 'code' ? (
-          <form className="auth-card" onSubmit={sendCode} noValidate={false}>
+        <h1>{showingCode ? 'Check your email' : 'Welcome to BookVerse'}</h1>
+        {!showingCode ? (
+          <form className="auth-card" onSubmit={sendCode} noValidate={false} aria-busy={step.kind === 'sending'}>
             <p className="lede">We’ll email you a one-time sign-in link. No password to remember.</p>
             <div className="field">
               <label htmlFor="email">Email address</label>
@@ -107,15 +113,15 @@ export default function SignIn() {
                 type="email"
                 autoComplete="email"
                 required
-                defaultValue={step.kind === 'busy' ? step.email : undefined}
+                defaultValue={step.kind === 'sending' ? step.email : undefined}
               />
             </div>
-            <button className="button button--primary" type="submit" disabled={step.kind === 'busy'}>
-              {step.kind === 'busy' ? 'Sending…' : 'Email me a sign-in link'}
+            <button className="button button--primary" type="submit" disabled={step.kind === 'sending'}>
+              {step.kind === 'sending' ? 'Sending…' : 'Email me a sign-in link'}
             </button>
           </form>
         ) : (
-          <form className="auth-card" onSubmit={verify}>
+          <form className="auth-card" onSubmit={verify} aria-busy={step.kind === 'verifying'}>
             <p className="lede">
               We sent an email to {step.email}. Open its sign-in link on any device; in this browser, this page updates
               by itself. If your email shows a code instead, enter it here.
@@ -131,16 +137,27 @@ export default function SignIn() {
                 pattern="[0-9 ]{6,8}"
                 maxLength={8}
                 required
+                disabled={step.kind === 'verifying'}
               />
             </div>
             <div className="actions">
-              <button className="button button--primary" type="submit">
-                Sign in
+              <button className="button button--primary" type="submit" disabled={step.kind === 'verifying'}>
+                {step.kind === 'verifying' ? 'Verifying…' : 'Sign in'}
               </button>
-              <button className="button button--ghost" type="button" onClick={() => setStep({ kind: 'email' })}>
+              <button
+                className="button button--ghost"
+                type="button"
+                onClick={() => setStep({ kind: 'email' })}
+                disabled={step.kind === 'verifying'}
+              >
                 Use a different email
               </button>
             </div>
+            {step.kind === 'verifying' && (
+              <p className="field-hint" role="status">
+                Checking your code…
+              </p>
+            )}
           </form>
         )}
         {!error && linkError && step.kind === 'email' && (
