@@ -1,0 +1,326 @@
+batch	kind	genres	title	author
+1	novel	romance,classics	Pride and Prejudice	Jane Austen
+1	novel	romance,classics	Emma	Jane Austen
+1	novel	romance,classics	Sense and Sensibility	Jane Austen
+1	novel	romance,classics	Persuasion	Jane Austen
+1	novel	gothic,comedy	Northanger Abbey	Jane Austen
+1	novel	romance,classics	Mansfield Park	Jane Austen
+1	novella	satire,classics	Lady Susan	Jane Austen
+1	novel	gothic,romance	Jane Eyre	Charlotte Brontë
+1	novel	literary-fiction,classics	Villette	Charlotte Brontë
+1	novel	gothic,romance	Wuthering Heights	Emily Brontë
+1	novel	literary-fiction,classics	The Tenant of Wildfell Hall	Anne Brontë
+1	novel	literary-fiction,classics	Agnes Grey	Anne Brontë
+1	novel	historical-fiction,classics	A Tale of Two Cities	Charles Dickens
+1	novel	literary-fiction,classics	Great Expectations	Charles Dickens
+1	novel	literary-fiction,classics	Oliver Twist	Charles Dickens
+1	novel	literary-fiction,classics	David Copperfield	Charles Dickens
+1	novel	literary-fiction,classics	Bleak House	Charles Dickens
+1	novella	classics	A Christmas Carol in Prose	Charles Dickens
+1	novel	literary-fiction,classics	Hard Times	Charles Dickens
+1	novel	literary-fiction,classics	Little Dorrit	Charles Dickens
+1	novel	literary-fiction,classics	Our Mutual Friend	Charles Dickens
+1	novel	comedy,classics	The Pickwick Papers	Charles Dickens
+1	novel	literary-fiction,classics	Nicholas Nickleby	Charles Dickens
+1	novel	literary-fiction,classics	The Old Curiosity Shop	Charles Dickens
+1	novel	mystery,classics	The Mystery of Edwin Drood	Charles Dickens
+1	novel	literary-fiction,classics	Tess of the d'Urbervilles	Thomas Hardy
+1	novel	romance,classics	Far from the Madding Crowd	Thomas Hardy
+1	novel	literary-fiction,classics	Jude the Obscure	Thomas Hardy
+1	novel	literary-fiction,classics	The Mayor of Casterbridge	Thomas Hardy
+1	novel	literary-fiction,classics	The Return of the Native	Thomas Hardy
+1	novel	literary-fiction,classics	Middlemarch	George Eliot
+1	novel	literary-fiction,classics	Silas Marner	George Eliot
+1	novel	literary-fiction,classics	The Mill on the Floss	George Eliot
+1	novel	literary-fiction,classics	Adam Bede	George Eliot
+1	novel	romance,classics	North and South	Elizabeth Cleghorn Gaskell
+1	novel	comedy,classics	Cranford	Elizabeth Cleghorn Gaskell
+1	novel	literary-fiction,classics	Wives and Daughters	Elizabeth Cleghorn Gaskell
+1	novel	satire,classics	Vanity Fair	William Makepeace Thackeray
+1	novel	literary-fiction,classics	Barchester Towers	Anthony Trollope
+1	novel	horror,science-fiction,gothic	Frankenstein	Mary Wollstonecraft Shelley
+1	novel	horror,gothic	Dracula	Bram Stoker
+1	novel	horror,gothic	The Jewel of Seven Stars	Bram Stoker
+1	novel	adventure,classics	Treasure Island	Robert Louis Stevenson
+1	novella	horror,gothic	The Strange Case of Dr. Jekyll and Mr. Hyde	Robert Louis Stevenson
+1	novel	adventure,historical-fiction	Kidnapped	Robert Louis Stevenson
+1	novel	adventure,historical-fiction	The Black Arrow	Robert Louis Stevenson
+1	poetry	children	A Child's Garden of Verses	Robert Louis Stevenson
+1	novel	gothic,literary-fiction	The Picture of Dorian Gray	Oscar Wilde
+1	drama	comedy,classics	The Importance of Being Earnest	Oscar Wilde
+1	drama	comedy,classics	An Ideal Husband	Oscar Wilde
+1	drama	comedy,classics	Lady Windermere's Fan	Oscar Wilde
+1	short_stories	children,mythology-folklore	The Happy Prince, and Other Tales	Oscar Wilde
+1	poetry	classics	The Ballad of Reading Gaol	Oscar Wilde
+1	novel	mystery,crime	A Study in Scarlet	Arthur Conan Doyle
+1	novel	mystery,crime	The Sign of the Four	Arthur Conan Doyle
+1	short_stories	mystery,crime	The Adventures of Sherlock Holmes	Arthur Conan Doyle
+1	short_stories	mystery,crime	The Memoirs of Sherlock Holmes	Arthur Conan Doyle
+1	novel	mystery,crime	The Hound of the Baskervilles	Arthur Conan Doyle
+1	short_stories	mystery,crime	The Return of Sherlock Holmes	Arthur Conan Doyle
+1	novel	mystery,crime	The Valley of Fear	Arthur Conan Doyle
+1	short_stories	mystery,crime	His Last Bow	Arthur Conan Doyle
+1	novel	adventure,science-fiction	The Lost World	Arthur Conan Doyle
+1	novella	science-fiction,time-travel	The Time Machine	H. G. Wells
+1	novel	science-fiction	The War of the Worlds	H. G. Wells
+1	novel	science-fiction	The Invisible Man	H. G. Wells
+1	novel	science-fiction,horror	The Island of Doctor Moreau	H. G. Wells
+1	novel	science-fiction	The First Men in the Moon	H. G. Wells
+1	novel	science-fiction,adventure	Twenty Thousand Leagues under the Sea	Jules Verne
+1	novel	adventure,classics	Around the World in Eighty Days	Jules Verne
+1	novel	science-fiction,adventure	A Journey to the Centre of the Earth	Jules Verne
+1	novel	science-fiction,adventure	From the Earth to the Moon	Jules Verne
+1	novel	adventure,science-fiction	The Mysterious Island	Jules Verne
+1	novel	adventure	Five Weeks in a Balloon	Jules Verne
+1	novel	fantasy,children	Alice's Adventures in Wonderland	Lewis Carroll
+1	novel	fantasy,children	Through the Looking-Glass	Lewis Carroll
+1	poetry	comedy,children	The Hunting of the Snark	Lewis Carroll
+1	novel	children,fantasy	The Wind in the Willows	Kenneth Grahame
+1	novel	fantasy,children	Peter Pan	J. M. Barrie
+1	novel	children,classics	The Secret Garden	Frances Hodgson Burnett
+1	novel	children,classics	A Little Princess	Frances Hodgson Burnett
+1	novel	children,classics	Little Lord Fauntleroy	Frances Hodgson Burnett
+1	novel	children,classics	Anne of Green Gables	L. M. Montgomery
+1	novel	children,classics	Anne of Avonlea	L. M. Montgomery
+1	novel	children,classics	Anne of the Island	L. M. Montgomery
+1	novel	classics,children	Little Women	Louisa May Alcott
+1	novel	classics,children	Little Men	Louisa May Alcott
+1	novel	adventure,classics	Adventures of Huckleberry Finn	Mark Twain
+1	novel	adventure,classics	The Adventures of Tom Sawyer	Mark Twain
+1	novel	satire,time-travel	A Connecticut Yankee in King Arthur's Court	Mark Twain
+1	novel	historical-fiction,children	The Prince and the Pauper	Mark Twain
+1	novel	satire,mystery	Pudd'nhead Wilson	Mark Twain
+1	memoir	biography-memoir,history	Life on the Mississippi	Mark Twain
+1	nonfiction	travel,comedy	The Innocents Abroad	Mark Twain
+1	novel	adventure,classics	Moby Dick	Herman Melville
+1	novella	literary-fiction,classics	Bartleby, the Scrivener	Herman Melville
+1	novel	adventure,travel	Typee	Herman Melville
+1	novel	literary-fiction,classics	The Scarlet Letter	Nathaniel Hawthorne
+1	novel	gothic,classics	The House of the Seven Gables	Nathaniel Hawthorne
+1	short_stories	gothic,classics	Twice-Told Tales	Nathaniel Hawthorne
+1	novel	adventure,horror	The Narrative of Arthur Gordon Pym of Nantucket	Edgar Allan Poe
+1	short_stories	horror,gothic	The Legend of Sleepy Hollow	Washington Irving
+1	novel	adventure,historical-fiction	The Last of the Mohicans	James Fenimore Cooper
+1	novel	historical-fiction,politics-society	Uncle Tom's Cabin	Harriet Beecher Stowe
+1	novel	literary-fiction,classics	The Awakening	Kate Chopin
+1	novel	literary-fiction,romance	The Age of Innocence	Edith Wharton
+1	novel	literary-fiction,classics	The House of Mirth	Edith Wharton
+1	novella	literary-fiction,classics	Ethan Frome	Edith Wharton
+1	novella	horror,gothic	The Turn of the Screw	Henry James
+1	novel	literary-fiction,classics	The Portrait of a Lady	Henry James
+1	novella	literary-fiction,classics	Daisy Miller	Henry James
+1	novel	war,classics	The Red Badge of Courage	Stephen Crane
+1	novel	adventure,classics	The Call of the Wild	Jack London
+1	novel	adventure,classics	White Fang	Jack London
+1	novel	adventure,classics	The Sea-Wolf	Jack London
+1	novel	literary-fiction,classics	Martin Eden	Jack London
+1	novel	dystopian,science-fiction	The Iron Heel	Jack London
+1	novel	literary-fiction,classics	My Ántonia	Willa Cather
+1	novel	literary-fiction,classics	O Pioneers!	Willa Cather
+1	novel	literary-fiction,classics	Sister Carrie	Theodore Dreiser
+1	novel	literary-fiction,politics-society	The Jungle	Upton Sinclair
+1	novel	literary-fiction,classics	The Great Gatsby	F. Scott Fitzgerald
+1	novel	literary-fiction,classics	This Side of Paradise	F. Scott Fitzgerald
+1	novel	literary-fiction,classics	The Beautiful and Damned	F. Scott Fitzgerald
+1	novel	satire,literary-fiction	Main Street	Sinclair Lewis
+1	novel	satire,literary-fiction	Babbitt	Sinclair Lewis
+1	novel	fantasy,children	The Wonderful Wizard of Oz	L. Frank Baum
+1	novel	fantasy,children	The Marvelous Land of Oz	L. Frank Baum
+1	novel	adventure,action	Tarzan of the Apes	Edgar Rice Burroughs
+1	novel	science-fiction,adventure	A Princess of Mars	Edgar Rice Burroughs
+1	novel	science-fiction,adventure	At the Earth's Core	Edgar Rice Burroughs
+1	novel	science-fiction,satire	Herland	Charlotte Perkins Gilman
+1	short_stories	horror,psychological-thriller	The Yellow Wallpaper	Charlotte Perkins Gilman
+1	novella	literary-fiction,classics	Heart of Darkness	Joseph Conrad
+1	novel	adventure,literary-fiction	Lord Jim	Joseph Conrad
+1	novel	thriller,literary-fiction	The Secret Agent	Joseph Conrad
+1	novel	literary-fiction,classics	Nostromo	Joseph Conrad
+1	short_stories	children,adventure	The Jungle Book	Rudyard Kipling
+1	short_stories	children,adventure	The Second Jungle Book	Rudyard Kipling
+1	novel	adventure,classics	Kim	Rudyard Kipling
+1	short_stories	children,mythology-folklore	Just So Stories	Rudyard Kipling
+1	novel	adventure,children	Captains Courageous	Rudyard Kipling
+1	novel	romance,comedy	A Room with a View	E. M. Forster
+1	novel	literary-fiction,classics	Howards End	E. M. Forster
+1	novel	literary-fiction,classics	Mrs. Dalloway	Virginia Woolf
+1	novel	literary-fiction,classics	Jacob's Room	Virginia Woolf
+1	novel	literary-fiction,classics	The Voyage Out	Virginia Woolf
+1	novel	literary-fiction,classics	Ulysses	James Joyce
+1	short_stories	literary-fiction,classics	Dubliners	James Joyce
+1	novel	literary-fiction,classics	A Portrait of the Artist as a Young Man	James Joyce
+1	novel	literary-fiction,classics	Sons and Lovers	D. H. Lawrence
+1	novel	literary-fiction,classics	Women in Love	D. H. Lawrence
+1	novel	literary-fiction,classics	The Rainbow	D. H. Lawrence
+1	novel	literary-fiction,classics	Of Human Bondage	W. Somerset Maugham
+1	novel	literary-fiction,classics	The Moon and Sixpence	W. Somerset Maugham
+1	novel	thriller,adventure	The Thirty-Nine Steps	John Buchan
+1	novel	adventure,historical-fiction	The Scarlet Pimpernel	Baroness Orczy
+1	novel	adventure,romance	The Prisoner of Zenda	Anthony Hope
+1	novel	adventure,classics	King Solomon's Mines	H. Rider Haggard
+1	novel	adventure,fantasy	She	H. Rider Haggard
+1	novel	mystery,thriller	The Woman in White	Wilkie Collins
+1	novel	mystery,crime	The Moonstone	Wilkie Collins
+1	novella	horror,gothic	Carmilla	J. Sheridan Le Fanu
+1	novel	comedy,travel	Three Men in a Boat (To Say Nothing of the Dog)	Jerome K. Jerome
+1	short_stories	comedy	My Man Jeeves	P. G. Wodehouse
+1	short_stories	mystery,crime	The Innocence of Father Brown	G. K. Chesterton
+1	novel	thriller,comedy	The Man Who Was Thursday	G. K. Chesterton
+1	short_stories	mystery,crime	The Wisdom of Father Brown	G. K. Chesterton
+1	novel	literary-fiction,classics	The Old Wives' Tale	Arnold Bennett
+1	novella	horror,gothic	The Great God Pan	Arthur Machen
+1	short_stories	horror,gothic	Ghost Stories of an Antiquary	M. R. James
+1	novel	literary-fiction,classics	The Good Soldier	Ford Madox Ford
+1	novel	historical-fiction,war,classics	War and Peace	Leo Tolstoy
+1	novel	literary-fiction,romance,classics	Anna Karenina	Leo Tolstoy
+1	novel	literary-fiction,classics	Resurrection	Leo Tolstoy
+1	novel	psychological-thriller,crime,classics	Crime and Punishment	Fyodor Dostoyevsky
+1	novel	literary-fiction,philosophy,classics	The Brothers Karamazov	Fyodor Dostoyevsky
+1	novel	literary-fiction,classics	The Idiot	Fyodor Dostoyevsky
+1	novella	literary-fiction,philosophy	Notes from the Underground	Fyodor Dostoyevsky
+1	short_stories	romance,classics	White Nights and Other Stories	Fyodor Dostoyevsky
+1	novel	satire,classics	Dead Souls	Nikolai Vasilevich Gogol
+1	novel	literary-fiction,classics	Fathers and Sons	Ivan Sergeevich Turgenev
+1	short_stories	literary-fiction,classics	The Lady with the Dog and Other Stories	Anton Pavlovich Chekhov
+1	novel	literary-fiction,classics	A Hero of Our Time	Mikhail Yurevich Lermontov
+1	novel	historical-fiction,classics	Les Misérables	Victor Hugo
+1	novel	historical-fiction,gothic	Notre-Dame de Paris	Victor Hugo
+1	novel	adventure,historical-fiction	The Three Musketeers	Alexandre Dumas
+1	novel	adventure,historical-fiction	The Count of Monte Cristo	Alexandre Dumas
+1	novel	adventure,historical-fiction	Twenty Years After	Alexandre Dumas
+1	novel	literary-fiction,classics	Madame Bovary	Gustave Flaubert
+1	novel	literary-fiction,classics	The Red and the Black	Stendhal
+1	novel	literary-fiction,classics	Father Goriot	Honoré de Balzac
+1	novel	literary-fiction,classics	Germinal	Émile Zola
+1	novel	crime,psychological-thriller	Thérèse Raquin	Émile Zola
+1	novella	satire,philosophy	Candide	Voltaire
+1	novel	gothic,romance	The Phantom of the Opera	Gaston Leroux
+1	novel	literary-fiction,classics	Swann's Way	Marcel Proust
+1	drama	comedy,satire	Tartuffe	Molière
+1	novel	adventure,comedy,classics	Don Quixote	Miguel de Cervantes Saavedra
+1	drama	classics,philosophy	Faust	Johann Wolfgang von Goethe
+1	novel	romance,classics	The Sorrows of Young Werther	Johann Wolfgang von Goethe
+1	novella	literary-fiction,classics	Metamorphosis	Franz Kafka
+1	novel	literary-fiction,classics	The Trial	Franz Kafka
+1	novel	philosophy,religion	Siddhartha	Hermann Hesse
+1	drama	drama,classics	A Doll's House	Henrik Ibsen
+1	drama	drama,classics	Hedda Gabler	Henrik Ibsen
+1	drama	drama,classics	An Enemy of the People	Henrik Ibsen
+1	drama	drama,classics	Peer Gynt	Henrik Ibsen
+1	poetry	classics,religion	The Divine Comedy	Dante Alighieri
+1	short_stories	classics,comedy	The Decameron	Giovanni Boccaccio
+1	nonfiction	politics-society,philosophy	The Prince	Niccolò Machiavelli
+1	poetry	mythology-folklore,war,classics	The Iliad	Homer
+1	poetry	mythology-folklore,adventure,classics	The Odyssey	Homer
+1	poetry	mythology-folklore,classics	The Aeneid	Virgil
+1	poetry	mythology-folklore,classics	The Metamorphoses of Ovid	Ovid
+1	nonfiction	philosophy,politics-society	The Republic	Plato
+1	nonfiction	philosophy	Symposium	Plato
+1	nonfiction	philosophy	Apology	Plato
+1	nonfiction	philosophy	Poetics	Aristotle
+1	nonfiction	philosophy,politics-society	Politics	Aristotle
+1	nonfiction	philosophy	Meditations	Marcus Aurelius
+1	nonfiction	philosophy	The Enchiridion	Epictetus
+1	nonfiction	history,philosophy	The Art of War	Sunzi
+1	nonfiction	philosophy,religion	The Analects of Confucius	Confucius
+1	nonfiction	philosophy,religion	Tao Te Ching	Laozi
+1	short_stories	mythology-folklore,classics	The Arabian Nights Entertainments	-
+1	poetry	mythology-folklore,classics	Beowulf	-
+1	poetry	mythology-folklore,classics	The Song of Roland	-
+1	poetry	classics,comedy	The Canterbury Tales, and Other Poems	Geoffrey Chaucer
+1	novel	mythology-folklore,classics	Le Morte d'Arthur	Thomas Malory
+1	poetry	religion,classics	Paradise Lost	John Milton
+1	novel	religion,classics	The Pilgrim's Progress	John Bunyan
+1	novel	adventure,classics	The Life and Adventures of Robinson Crusoe	Daniel Defoe
+1	novel	literary-fiction,classics	Moll Flanders	Daniel Defoe
+1	novel	satire,adventure,classics	Gulliver's Travels into Several Remote Nations of the World	Jonathan Swift
+1	essay	satire,politics-society	A Modest Proposal	Jonathan Swift
+1	novel	comedy,classics	The History of Tom Jones, a Foundling	Henry Fielding
+1	novel	comedy,classics	The Life and Opinions of Tristram Shandy, Gentleman	Laurence Sterne
+1	novel	comedy,classics	The Vicar of Wakefield	Oliver Goldsmith
+1	novel	gothic,horror	The Castle of Otranto	Horace Walpole
+1	novel	gothic,romance	The Mysteries of Udolpho	Ann Ward Radcliffe
+1	novel	historical-fiction,adventure	Ivanhoe	Walter Scott
+1	novel	gothic,horror	The Monk	M. G. Lewis
+1	drama	drama,classics	Hamlet, Prince of Denmark	William Shakespeare
+1	drama	romance,drama	Romeo and Juliet	William Shakespeare
+1	drama	drama,classics	Macbeth	William Shakespeare
+1	drama	drama,classics	Othello, the Moor of Venice	William Shakespeare
+1	drama	drama,classics	King Lear	William Shakespeare
+1	drama	comedy,fantasy	A Midsummer Night's Dream	William Shakespeare
+1	drama	comedy,classics	The Merchant of Venice	William Shakespeare
+1	drama	comedy,romance	Much Ado About Nothing	William Shakespeare
+1	drama	comedy,classics	Twelfth Night	William Shakespeare
+1	drama	drama,fantasy	The Tempest	William Shakespeare
+1	poetry	romance,classics	Shakespeare's Sonnets	William Shakespeare
+1	drama	drama,classics	The Tragical History of Doctor Faustus	Christopher Marlowe
+1	poetry	classics	Leaves of Grass	Walt Whitman
+1	poetry	classics	Poems by Emily Dickinson, Three Series, Complete	Emily Dickinson
+1	poetry	classics	Lyrical Ballads, With a Few Other Poems	William Wordsworth
+1	poetry	gothic,classics	The Rime of the Ancient Mariner	Samuel Taylor Coleridge
+1	poetry	classics,religion	Songs of Innocence and of Experience	William Blake
+1	poetry	mythology-folklore,classics	Idylls of the King	Alfred Tennyson
+1	poetry	satire,classics	Don Juan	Byron
+1	poetry	classics	North of Boston	Robert Frost
+1	poetry	classics	A Boy's Will	Robert Frost
+1	poetry	classics	The Waste Land	T. S. Eliot
+1	poetry	classics	Prufrock and Other Observations	T. S. Eliot
+1	poetry	philosophy,religion	The Prophet	Kahlil Gibran
+1	poetry	philosophy,classics	Rubáiyát of Omar Khayyám	Omar Khayyam
+1	poetry	classics	A Shropshire Lad	A. E. Housman
+1	poetry	fantasy,classics	Goblin Market	Christina Georgina Rossetti
+1	poetry	romance,classics	Sonnets from the Portuguese	Elizabeth Barrett Browning
+1	poetry	mythology-folklore,classics	The Song of Hiawatha	Henry Wadsworth Longfellow
+1	poetry	classics,religion	Gitanjali	Rabindranath Tagore
+1	poetry	classics	Lyrics of Lowly Life	Paul Laurence Dunbar
+1	poetry	religion,classics	Poems on Various Subjects, Religious and Moral	Phillis Wheatley
+1	nonfiction	philosophy,science	Walden, and On The Duty Of Civil Disobedience	Henry David Thoreau
+1	essay	philosophy	Essays — First Series	Ralph Waldo Emerson
+1	memoir	biography-memoir,history	Narrative of the Life of Frederick Douglass, an American Slave	Frederick Douglass
+1	memoir	biography-memoir,history	Up from Slavery	Booker T. Washington
+1	essay	history,politics-society	The Souls of Black Folk	W. E. B. Du Bois
+1	memoir	biography-memoir,history	Incidents in the Life of a Slave Girl	Harriet A. Jacobs
+1	memoir	biography-memoir,history	The Interesting Narrative of the Life of Olaudah Equiano, Or Gustavus Vassa, The African	Olaudah Equiano
+1	memoir	biography-memoir,history	The Autobiography of Benjamin Franklin	Benjamin Franklin
+1	nonfiction	science	On the Origin of Species By Means of Natural Selection	Charles Darwin
+1	nonfiction	science,travel	The Voyage of the Beagle	Charles Darwin
+1	nonfiction	business,politics-society	An Inquiry into the Nature and Causes of the Wealth of Nations	Adam Smith
+1	nonfiction	politics-society,history	The Communist Manifesto	Karl Marx
+1	nonfiction	politics-society,philosophy	On Liberty	John Stuart Mill
+1	nonfiction	politics-society,philosophy	The Subjection of Women	John Stuart Mill
+1	nonfiction	politics-society,philosophy	A Vindication of the Rights of Woman	Mary Wollstonecraft
+1	nonfiction	politics-society,history	Common Sense	Thomas Paine
+1	nonfiction	politics-society,philosophy	Leviathan	Thomas Hobbes
+1	nonfiction	philosophy,science	A Discourse on Method	René Descartes
+1	nonfiction	philosophy	Thus Spake Zarathustra	Friedrich Wilhelm Nietzsche
+1	nonfiction	philosophy	Beyond Good and Evil	Friedrich Wilhelm Nietzsche
+1	nonfiction	psychology,religion	The Varieties of Religious Experience	William James
+1	nonfiction	psychology,science	Dream Psychology	Sigmund Freud
+1	essay	philosophy,classics	Essays of Michel de Montaigne — Complete	Michel de Montaigne
+1	memoir	biography-memoir	The Story of My Life	Helen Keller
+1	nonfiction	travel,science	My First Summer in the Sierra	John Muir
+1	nonfiction	education	The Elements of Style	William Strunk
+1	nonfiction	history,politics-society	Native Life in South Africa, Before and Since the European War and the Boer Rebellion	Sol T. Plaatje
+1	nonfiction	philosophy,religion	The Book of Tea	Kakuzo Okakura
+1	nonfiction	philosophy,history	Bushido, the Soul of Japan	Inazo Nitobe
+1	short_stories	horror,mythology-folklore	Kwaidan	Lafcadio Hearn
+1	short_stories	children,mythology-folklore	Grimms' Fairy Tales	Jacob Grimm
+1	short_stories	children,mythology-folklore	Fairy Tales of Hans Christian Andersen	H. C. Andersen
+1	short_stories	children,mythology-folklore	Aesop's Fables	Aesop
+1	novel	children,fantasy	The Adventures of Pinocchio	Carlo Collodi
+1	novel	children,classics	Heidi	Johanna Spyri
+1	novel	children,classics	Black Beauty	Anna Sewell
+1	novel	children,fantasy	The Velveteen Rabbit	Margery Williams Bianco
+1	short_stories	children	The Tale of Peter Rabbit	Beatrix Potter
+1	novel	children,classics	Pollyanna	Eleanor H. Porter
+1	novel	children,classics	Rebecca of Sunnybrook Farm	Kate Douglas Smith Wiggin
+1	novel	children,classics	The Railway Children	E. Nesbit
+1	novel	children,fantasy	Five Children and It	E. Nesbit
+1	novel	children,fantasy	The Story of Doctor Dolittle	Hugh Lofting
+1	short_stories	children,mythology-folklore	The Blue Fairy Book	Andrew Lang
+1	novel	children,adventure	The Swiss Family Robinson	Johann David Wyss
+1	novel	children,fantasy	The Princess and the Goblin	George MacDonald
+1	novel	children,fantasy	The Water-Babies	Charles Kingsley
+1	novel	literary-fiction,history	Clotel	William Wells Brown
+1	short_stories	literary-fiction,mythology-folklore	The Conjure Woman	Charles W. Chesnutt
+1	novel	literary-fiction,history	Iola Leroy	Frances Ellen Watkins Harper
+1	novel	literary-fiction,politics-society	The Home and the World	Rabindranath Tagore

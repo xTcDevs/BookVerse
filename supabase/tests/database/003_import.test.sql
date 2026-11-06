@@ -3,7 +3,7 @@
 -- pg_net's queue and the answers are inserted by hand, as pg_net would store them.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(65);
+select plan(66);
 
 create or replace function pg_temp.act_as(who uuid) returns void language plpgsql as $$
 begin
@@ -103,6 +103,7 @@ select is(private.person_name('Homer'), 'Homer', 'single names are kept');
 select ok(private.names_match('Fyodor Dostoyevsky', 'Dostoyevsky, Fyodor, 1821-1881'), 'author names match in any order');
 select ok(not private.names_match('Jane Austen', 'Brontë, Charlotte'), 'different authors do not match');
 select is(private.main_title(E'Frankenstein; Or, The Modern Prometheus'), 'Frankenstein', 'the main title stops at the subtitle');
+select is(private.main_title('Jane Eyre: An Autobiography'), 'Jane Eyre', 'colon subtitles are recognised too');
 
 -- ── A clean record ──
 select is(private.ingest_gutenberg_rdf((select id from private.import_queue where external_id = '1342'),
