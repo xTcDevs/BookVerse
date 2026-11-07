@@ -10,7 +10,7 @@ import {
   worksInGenre,
 } from './catalogue';
 import { formatForKind, formatList, formatSlugs } from './formats';
-import { getGenre } from './genres';
+import { genreFamilySlugs, getGenre } from './genres';
 import { prerenderPaths } from './paths';
 
 // The starter shelf is real, openly licensed data. These checks keep it honest.
@@ -66,6 +66,14 @@ describe('lookups with missing or empty input', () => {
     expect(worksByContributor('nobody')).toEqual([]);
     expect(worksInGenre('no-such-genre')).toEqual([]);
     expect(worksInGenre('no-such-genre', [])).toEqual([]);
+  });
+});
+
+describe('genre filters', () => {
+  it('includes direct subgenres when a parent genre is selected', () => {
+    expect(genreFamilySlugs('mystery')).toEqual(['mystery', 'crime']);
+    expect(genreFamilySlugs('fantasy')).toEqual(['fantasy', 'epic-fantasy', 'urban-fantasy', 'isekai']);
+    expect(genreFamilySlugs('unknown')).toEqual(['unknown']);
   });
 });
 

@@ -154,3 +154,8 @@ export function topLevelGenres(group?: Genre['group']): Genre[] {
 export function subgenres(parentSlug: string): Genre[] {
   return genres.filter((g) => g.parent === parentSlug);
 }
+
+/** The selected genre and its direct subgenres, matching genre landing pages. */
+export function genreFamilySlugs(slug: string): string[] {
+  return [slug, ...subgenres(slug).map((g) => g.slug)];
+}

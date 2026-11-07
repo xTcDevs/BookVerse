@@ -4,7 +4,7 @@ import type { Route } from './+types/explore';
 import { BookCollection, EmptyState, SectionHead, bylineOf } from '~/components/books';
 import { allWorks, type Work } from '~/data/catalogue';
 import { formatForKind, formatList, type FormatSlug } from '~/data/formats';
-import { genres, getGenre } from '~/data/genres';
+import { genreFamilySlugs, genres, getGenre } from '~/data/genres';
 import { usePrefs } from '~/lib/prefs/hooks';
 import { buildMeta } from '~/lib/seo';
 import { useHydrated } from '~/lib/use-hydrated';
@@ -49,14 +49,16 @@ export default function Explore() {
   const freeOnly = hydrated && params.get('access') === 'free';
 
   const results = useMemo(
-    () =>
-      allWorks().filter(
+    () => {
+      const selectedGenres = genre ? new Set(genreFamilySlugs(genre)) : null;
+      return allWorks().filter(
         (w) =>
           matches(w, q) &&
           (!format || formatForKind(w.kind).slug === format) &&
-          (!genre || w.genres.includes(genre)) &&
+          (!selectedGenres || w.genres.some((slug) => selectedGenres.has(slug))) &&
           (!freeOnly || isFree(w)),
-      ),
+      );
+    },
     [q, format, genre, freeOnly],
   );
 
