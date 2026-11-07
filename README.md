@@ -1,65 +1,155 @@
 # BookVerse
 
-Discover, read and follow stories in every format: novels, manga, manhwa, manhua, webtoons, comics, graphic novels, web and light novels, audiobooks, poetry and non-fiction.
+**One place for every kind of story.**
 
-**Stack:** React 19 · React Router 7 (pre-rendered, no server) · TypeScript · Supabase (auth, Postgres, storage) · Netlify.
+BookVerse is a book and comics discovery platform for readers who move between formats. Explore novels, manga, manhwa, manhua, webtoons, comics, graphic novels, web novels, light novels, audiobooks, poetry and non-fiction.
 
-## Run it
+The experience combines a responsive interface, account-backed preferences and a catalogue grounded in real, openly licensed editions.
+
+## Discover stories across formats
+
+BookVerse is designed to bring different reading formats into one discovery experience:
+
+- Novels and web novels
+- Light novels
+- Manga, manhwa and manhua
+- Webtoons, comics and graphic novels
+- Audiobooks
+- Poetry
+- Non-fiction
+
+The catalogue and discovery experience are structured around formats and genres, helping readers explore without pretending that unavailable activity data exists.
+
+## Product highlights
+
+- **Broad format discovery:** Explore a range of written, illustrated and audio storytelling formats.
+- **Genre and catalogue browsing:** Find editions through the site's format and genre organisation.
+- **Themes and personalisation:** Choose from a design system with eight site themes and six accent options, with contrast checks.
+- **Preference scopes:** A preference engine supports five independent scopes, with local preferences and account synchronisation.
+- **Responsive experience:** Shared components and route layouts support different screen sizes.
+- **Account and data services:** Supabase provides authentication, Postgres and storage.
+- **Pre-rendered delivery:** The application is pre-rendered for deployment as a static site, without requiring an application server.
+
+## Technology
+
+| Area | Technology |
+|---|---|
+| UI | React 19 |
+| Routing | React Router 7 |
+| Language | TypeScript |
+| Backend services | Supabase Auth, Postgres and Storage |
+| Hosting | Netlify |
+| Unit tests | Vitest |
+| Browser tests | Playwright |
+| Accessibility checks | axe |
+| Build output | Pre-rendered static site |
+
+## Run locally
+
+### Requirements
+
+- Node.js 22 (the repository includes an `.nvmrc`)
+- npm
+- Supabase project values for backend-connected functionality
+
+### Install and start
 
 ```bash
-nvm use            # Node 22
+nvm use
 npm ci
-cp .env.example .env.local   # fill in the two public Supabase values
-npm run dev                  # http://localhost:5173
+cp .env.example .env.local
+npm run dev
 ```
 
-| Command                        | What it does                                                   |
-| ------------------------------ | -------------------------------------------------------------- |
-| `npm run build`                | Pre-renders every page to `build/client`, adds CSP, sitemap    |
-| `npm run preview`              | Serves the build like Netlify on http://localhost:4173         |
-| `npm test`                     | Unit tests (Vitest)                                            |
-| `npm run test:e2e`             | Browser tests on the build: routes, layout, themes, axe a11y   |
-| `npm run typecheck` / `lint`   | TypeScript and ESLint                                          |
-| `npm run check:secrets`        | Fails if a private Supabase credential is in the browser files |
-| `npm run db:start` / `db:test` | Local Supabase (Docker) and the pgTAP security tests           |
+Add the required public Supabase values to `.env.local` before testing account-backed functionality.
+
+The development server runs at:
+
+```text
+http://localhost:5173
+```
 
 ## Environment variables
 
-Only **public** values go to the browser, and only with the `VITE_` prefix:
+Only public configuration belongs in browser-exposed environment variables. The application uses the `VITE_` prefix for these values.
 
-| Name                            | Where                              | Safe in the browser?     |
-| ------------------------------- | ---------------------------------- | ------------------------ |
-| `VITE_SUPABASE_URL`             | Netlify, GitHub vars, `.env.local` | Yes                      |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Netlify, GitHub vars, `.env.local` | Yes (`sb_publishable_…`) |
-| `VITE_SITE_URL`                 | Netlify                            | Yes                      |
+| Variable | Purpose | Browser-safe |
+|---|---|---|
+| `VITE_SUPABASE_URL` | Supabase project URL | Yes |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable key | Yes |
+| `VITE_SITE_URL` | Public site URL | Yes |
 
-The Supabase **secret key** (`sb_secret_…` / `service_role`) is never used by the site. Only Supabase Edge Functions use it, and Supabase injects it at runtime. The build refuses to run if a `VITE_` variable looks like a secret, and CI scans the output and the git history.
+**Never put a Supabase secret key or service-role key in browser code or a `VITE_` variable.** Server-only secrets belong in the appropriate server-side environment. The build includes checks intended to reject secret-looking `VITE_` values, and CI scans build output and Git history.
 
-## Supabase project settings (dashboard only)
+## Supabase project configuration
 
-These can't be set from migrations; check them on any new project:
+When setting up a new Supabase project, review the following dashboard settings:
 
-- **Integrations → Data API → Enable Data API: on**, with the `public` schema exposed. When it's off, every database call returns `503 PGRST002`.
-- **Authentication → URL Configuration**: Site URL `https://bookverse-1.netlify.app`; redirect URLs `https://bookverse-1.netlify.app/**`, `https://*--bookverse-1.netlify.app/**`, `http://localhost:5173/**`, `http://localhost:4173/**`.
-- **Emails**: the built-in mailer sends at most 2 emails an hour, only to the project's team members, using Supabase's default link email. Public sign-up needs custom SMTP (then the sign-in template can include `{{ .Token }}` for the 6-digit code).
+1. **Integrations → Data API:** Enable the Data API and expose the `public` schema.
+2. **Authentication → URL Configuration:** Set the Site URL and redirect URLs to match the deployment and local development environments.
+3. **Email authentication:** The built-in Supabase mailer has sending limits and is intended for limited testing. Public sign-up may require custom SMTP configuration.
 
-## Layout
+The current deployment and redirect configuration is documented in the repository's setup and project configuration. Update those values when deploying to a different site; do not assume the example production domain applies to every environment.
 
-```
+## Useful commands
+
+| Command | Description |
+|---|---|
+| `nvm use` | Select the Node version specified by the project |
+| `npm ci` | Install locked dependencies |
+| `npm run dev` | Start the local development server |
+| `npm run build` | Build and pre-render the site, including CSP and sitemap output |
+| `npm run preview` | Preview the production build locally |
+| `npm test` | Run Vitest unit tests |
+| `npm run test:e2e` | Run Playwright browser tests against the build |
+| `npm run typecheck` | Run TypeScript checks |
+| `npm run lint` | Run ESLint |
+| `npm run check:secrets` | Check for private Supabase credentials in browser files |
+| `npm run db:start` | Start the local Supabase environment (Docker) |
+| `npm run db:test` | Run database security tests |
+
+## Project structure
+
+```text
 app/
-  design/      colour maths and theme tokens (8 site themes × 6 accents, contrast-checked)
-  lib/prefs/   preference engine: 5 independent scopes, local + account sync
-  data/        formats, genres and the openly licensed starter shelf
-  routes/      pages
-  components/  shared UI
+  design/      colour maths and theme tokens
+  lib/prefs/   preference engine and local/account synchronisation
+  data/        formats, genres and openly licensed starter shelf
+  routes/      application pages
+  components/  shared interface components
+
 supabase/
-  migrations/  schema, row-level security, storage policies
+  migrations/  schema, row-level security and storage policies
   tests/       pgTAP security tests
-  functions/   delete-account (runs server-side with the secret key)
-e2e/           Playwright tests
-scripts/       post-build, secret scan, static server
+  functions/   server-side account deletion
+
+e2e/           Playwright browser tests
+scripts/       post-build tasks, secret scan and static server
 ```
 
-## Data honesty
+## Catalogue integrity
 
-The catalogue contains only real, openly licensed editions (Standard Ebooks CC0 text and descriptions, Project Gutenberg links). There are no invented ratings, reviews or popularity numbers. Lists that need real activity data say so until that data exists.
+BookVerse aims to be transparent about the information it presents:
+
+- The starter catalogue uses real, openly licensed editions.
+- Text and descriptions are sourced from openly licensed collections such as Standard Ebooks (CC0) and Project Gutenberg.
+- The interface does not invent ratings, reviews or popularity figures.
+- Where real activity data is not available, the product communicates that limitation rather than presenting made-up metrics.
+
+## Security and account data
+
+Database access is governed by Supabase Row Level Security and storage policies. Account deletion is handled by a server-side Edge Function so the Supabase secret key is not exposed to the browser. Use the database tests and secret checks when changing data access or account flows.
+
+## Deployment
+
+BookVerse is designed for static deployment on Netlify. The build pre-renders routes into `build/client` and includes content security policy and sitemap generation.
+
+When deploying:
+- Configure the public environment variables in the hosting dashboard.
+- Confirm the Supabase authentication Site URL and redirect allowlist.
+- Keep secret keys in server-side configuration only.
+- Run the build, type checks, tests and secret checks before publishing.
+
+---
+
+A home for stories, whatever form they take.
