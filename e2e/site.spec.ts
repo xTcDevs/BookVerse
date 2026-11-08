@@ -63,6 +63,23 @@ test.describe('layout', () => {
   }
 });
 
+test.describe('search', () => {
+  test('announces result counts without making the entire results list a live region', async ({ page }) => {
+    await page.goto('/explore');
+    await page.waitForLoadState('networkidle');
+
+    const results = page.locator('section[aria-labelledby="results-title"]');
+    const count = page.getByRole('status');
+    await expect(results).not.toHaveAttribute('aria-live');
+    await expect(count).toHaveText(/^\d+ books?$/);
+    await expect(count).toHaveAttribute('aria-atomic', 'true');
+
+    await page.getByRole('searchbox', { name: 'Search the catalogue' }).fill('no-book-with-this-title');
+    await page.getByRole('button', { name: 'Search' }).click();
+    await expect(count).toHaveText('0 books');
+  });
+});
+
 test.describe('personalisation', () => {
   test('a chosen site theme persists across pages and reloads with no flash', async ({ page }) => {
     await page.goto('/settings/appearance');

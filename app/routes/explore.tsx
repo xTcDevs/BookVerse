@@ -145,12 +145,12 @@ export default function Explore() {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="results-title" aria-live="polite">
+      <section className="section" aria-labelledby="results-title">
         <SectionHead
           title={filtering ? 'Results' : 'The starter shelf'}
           id="results-title"
           action={
-            <span className="result-count">
+            <span className="result-count" role="status" aria-atomic="true">
               {results.length} {results.length === 1 ? 'book' : 'books'}
             </span>
           }
