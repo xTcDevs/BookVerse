@@ -5,6 +5,7 @@ import { BookCollection, EmptyState, SectionHead, bylineOf } from '~/components/
 import { allWorks, type Work } from '~/data/catalogue';
 import { formatForKind, formatList, type FormatSlug } from '~/data/formats';
 import { genreFamilySlugs, genres, getGenre } from '~/data/genres';
+import { matchesSearchQuery } from '~/data/search';
 import { usePrefs } from '~/lib/prefs/hooks';
 import { buildMeta } from '~/lib/seo';
 import { useHydrated } from '~/lib/use-hydrated';
@@ -24,14 +25,8 @@ function matches(work: Work, query: string): boolean {
     bylineOf(work),
     ...work.genres.map((g) => getGenre(g)?.name ?? g),
     formatForKind(work.kind).label,
-  ]
-    .join(' ')
-    .toLocaleLowerCase();
-  return query
-    .toLocaleLowerCase()
-    .split(/\s+/)
-    .filter(Boolean)
-    .every((term) => haystack.includes(term));
+  ].join(' ');
+  return matchesSearchQuery(haystack, query);
 }
 
 function isFree(work: Work): boolean {
