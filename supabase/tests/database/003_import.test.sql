@@ -3,7 +3,7 @@
 -- pg_net's queue and the answers are inserted by hand, as pg_net would store them.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(66);
+select plan(68);
 
 create or replace function pg_temp.act_as(who uuid) returns void language plpgsql as $$
 begin
@@ -259,6 +259,24 @@ select results_eq($$select o.access::text, o.url from public.offers o join publi
   $$values ('download'::text, 'https://standardebooks.org/ebooks/fergus-hume/the-green-mummy/downloads/book.epub'::text),
            ('read_official_external', 'https://standardebooks.org/ebooks/fergus-hume/the-green-mummy/text/single-page')$$,
   'its links go to Standard Ebooks, without feed tracking parameters');
+
+-- Feed link attributes are external input: only canonical Standard Ebooks destinations are trusted.
+select throws_ok($insert into public.offers (edition_id, access, license, provider, source_id, url)
+  select e.id, 'download', 'public_domain', 'Standard Ebooks', s.id,
+         'https://attacker.example/ebooks/fergus-hume/the-green-mummy/downloads/book.epub'
+  from public.editions e
+  join public.works w on w.id = e.work_id
+  join public.sources s on s.slug = 'standard-ebooks'
+  where w.title = 'The Green Mummy'$,
+  '23514', null, 'Standard Ebooks offers cannot point to another host');
+select throws_ok($insert into public.offers (edition_id, access, license, provider, source_id, url)
+  select e.id, 'download', 'public_domain', 'Standard Ebooks', s.id,
+         'https://standardebooks.org/ebooks/fergus-hume/the-green-mummy/redirect'
+  from public.editions e
+  join public.works w on w.id = e.work_id
+  join public.sources s on s.slug = 'standard-ebooks'
+  where w.title = 'The Green Mummy'$,
+  '23514', null, 'Standard Ebooks offers use only the expected reading and download paths');
 
 select * from finish();
 rollback;
