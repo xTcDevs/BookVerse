@@ -13,6 +13,11 @@ describe('catalogue search text', () => {
     }
   });
 
+  it('treats punctuation as a separator in names and titles', () => {
+    expect(matchesSearchQuery('Jane Austen', 'Austen, Jane')).toBe(true);
+    expect(matchesSearchQuery('The Time Traveller', 'time-traveller')).toBe(true);
+  });
+
   it('keeps case-insensitive, order-independent matching for every query word', () => {
     expect(matchesSearchQuery('Pride and Prejudice — Jane Austen', 'AUSTEN pride')).toBe(true);
     expect(matchesSearchQuery('Pride and Prejudice', 'pride mystery')).toBe(false);
