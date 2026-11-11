@@ -6,6 +6,6 @@ alter table public.offers
     provider <> 'Standard Ebooks'
     or (
       url is not null
-      and url ~ '^https://standardebooks\\.org/ebooks/[a-z0-9-]+/[a-z0-9-]+/(text/single-page|downloads/book\\.epub)$'
+      and url ~ '^https://standardebooks\.org/ebooks/[a-z0-9-]+/[a-z0-9-]+/(text/single-page|downloads/book\.epub)$'
     )
   );
