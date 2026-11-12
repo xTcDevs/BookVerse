@@ -86,10 +86,10 @@ batch	kind	genres	title	author
 1	novel	classics,children	Little Women	Louisa May Alcott
 1	novel	classics,children	Little Men	Louisa May Alcott
 1	novel	adventure,classics	Adventures of Huckleberry Finn	Mark Twain
-1	novel	adventure,classics	The Adventures of Tom Sawyer	Mark Twain
+1	novel	adventure,classics	The Adventures of Tom Sawyer, Complete	Mark Twain
 1	novel	satire,time-travel	A Connecticut Yankee in King Arthur's Court	Mark Twain
 1	novel	historical-fiction,children	The Prince and the Pauper	Mark Twain
-1	novel	satire,mystery	Pudd'nhead Wilson	Mark Twain
+1	novel	satire,mystery	The Tragedy of Pudd'nhead Wilson	Mark Twain
 1	memoir	biography-memoir,history	Life on the Mississippi	Mark Twain
 1	nonfiction	travel,comedy	The Innocents Abroad	Mark Twain
 1	novel	adventure,classics	Moby Dick	Herman Melville
@@ -102,12 +102,11 @@ batch	kind	genres	title	author
 1	short_stories	horror,gothic	The Legend of Sleepy Hollow	Washington Irving
 1	novel	adventure,historical-fiction	The Last of the Mohicans	James Fenimore Cooper
 1	novel	historical-fiction,politics-society	Uncle Tom's Cabin	Harriet Beecher Stowe
-1	novel	literary-fiction,classics	The Awakening	Kate Chopin
+1	novel	literary-fiction,classics	The Awakening, and Selected Short Stories	Kate Chopin
 1	novel	literary-fiction,romance	The Age of Innocence	Edith Wharton
 1	novel	literary-fiction,classics	The House of Mirth	Edith Wharton
 1	novella	literary-fiction,classics	Ethan Frome	Edith Wharton
 1	novella	horror,gothic	The Turn of the Screw	Henry James
-1	novel	literary-fiction,classics	The Portrait of a Lady	Henry James
 1	novella	literary-fiction,classics	Daisy Miller	Henry James
 1	novel	war,classics	The Red Badge of Courage	Stephen Crane
 1	novel	adventure,classics	The Call of the Wild	Jack London
@@ -160,7 +159,7 @@ batch	kind	genres	title	author
 1	novel	adventure,fantasy	She	H. Rider Haggard
 1	novel	mystery,thriller	The Woman in White	Wilkie Collins
 1	novel	mystery,crime	The Moonstone	Wilkie Collins
-1	novella	horror,gothic	Carmilla	J. Sheridan Le Fanu
+1	novella	horror,gothic	Carmilla	Joseph Sheridan Le Fanu
 1	novel	comedy,travel	Three Men in a Boat (To Say Nothing of the Dog)	Jerome K. Jerome
 1	short_stories	comedy	My Man Jeeves	P. G. Wodehouse
 1	short_stories	mystery,crime	The Innocence of Father Brown	G. K. Chesterton
@@ -181,7 +180,7 @@ batch	kind	genres	title	author
 1	novel	satire,classics	Dead Souls	Nikolai Vasilevich Gogol
 1	novel	literary-fiction,classics	Fathers and Sons	Ivan Sergeevich Turgenev
 1	short_stories	literary-fiction,classics	The Lady with the Dog and Other Stories	Anton Pavlovich Chekhov
-1	novel	literary-fiction,classics	A Hero of Our Time	Mikhail Yurevich Lermontov
+1	novel	literary-fiction,classics	A Hero of Our Time	Mikhail Lermontov
 1	novel	historical-fiction,classics	Les Misérables	Victor Hugo
 1	novel	historical-fiction,gothic	Notre-Dame de Paris	Victor Hugo
 1	novel	adventure,historical-fiction	The Three Musketeers	Alexandre Dumas
@@ -207,44 +206,43 @@ batch	kind	genres	title	author
 1	drama	drama,classics	An Enemy of the People	Henrik Ibsen
 1	drama	drama,classics	Peer Gynt	Henrik Ibsen
 1	poetry	classics,religion	The Divine Comedy	Dante Alighieri
-1	short_stories	classics,comedy	The Decameron	Giovanni Boccaccio
+1	short_stories	classics,comedy	The Decameron of Giovanni Boccaccio	Giovanni Boccaccio
 1	nonfiction	politics-society,philosophy	The Prince	Niccolò Machiavelli
 1	poetry	mythology-folklore,war,classics	The Iliad	Homer
 1	poetry	mythology-folklore,adventure,classics	The Odyssey	Homer
 1	poetry	mythology-folklore,classics	The Aeneid	Virgil
-1	poetry	mythology-folklore,classics	The Metamorphoses of Ovid	Ovid
 1	nonfiction	philosophy,politics-society	The Republic	Plato
 1	nonfiction	philosophy	Symposium	Plato
 1	nonfiction	philosophy	Apology	Plato
-1	nonfiction	philosophy	Poetics	Aristotle
+1	nonfiction	philosophy	The Poetics of Aristotle	Aristotle
 1	nonfiction	philosophy,politics-society	Politics	Aristotle
 1	nonfiction	philosophy	Meditations	Marcus Aurelius
 1	nonfiction	philosophy	The Enchiridion	Epictetus
 1	nonfiction	history,philosophy	The Art of War	Sunzi
-1	nonfiction	philosophy,religion	The Analects of Confucius	Confucius
-1	nonfiction	philosophy,religion	Tao Te Ching	Laozi
+1	nonfiction	philosophy,religion	The Analects of Confucius (from the Chinese Classics)	Confucius
+1	nonfiction	philosophy,religion	The Tao Teh King, or the Tao and its Characteristics	Laozi
 1	short_stories	mythology-folklore,classics	The Arabian Nights Entertainments	-
 1	poetry	mythology-folklore,classics	Beowulf	-
 1	poetry	mythology-folklore,classics	The Song of Roland	-
 1	poetry	classics,comedy	The Canterbury Tales, and Other Poems	Geoffrey Chaucer
 1	novel	mythology-folklore,classics	Le Morte d'Arthur	Thomas Malory
 1	poetry	religion,classics	Paradise Lost	John Milton
-1	novel	religion,classics	The Pilgrim's Progress	John Bunyan
+1	novel	religion,classics	The Pilgrim's Progress from this world to that which is to come	John Bunyan
 1	novel	adventure,classics	The Life and Adventures of Robinson Crusoe	Daniel Defoe
 1	novel	literary-fiction,classics	Moll Flanders	Daniel Defoe
 1	novel	satire,adventure,classics	Gulliver's Travels into Several Remote Nations of the World	Jonathan Swift
 1	essay	satire,politics-society	A Modest Proposal	Jonathan Swift
-1	novel	comedy,classics	The History of Tom Jones, a Foundling	Henry Fielding
+1	novel	comedy,classics	History of Tom Jones, a Foundling	Henry Fielding
 1	novel	comedy,classics	The Life and Opinions of Tristram Shandy, Gentleman	Laurence Sterne
 1	novel	comedy,classics	The Vicar of Wakefield	Oliver Goldsmith
 1	novel	gothic,horror	The Castle of Otranto	Horace Walpole
 1	novel	gothic,romance	The Mysteries of Udolpho	Ann Ward Radcliffe
 1	novel	historical-fiction,adventure	Ivanhoe	Walter Scott
 1	novel	gothic,horror	The Monk	M. G. Lewis
-1	drama	drama,classics	Hamlet, Prince of Denmark	William Shakespeare
+1	drama	drama,classics	Hamlet	William Shakespeare
 1	drama	romance,drama	Romeo and Juliet	William Shakespeare
 1	drama	drama,classics	Macbeth	William Shakespeare
-1	drama	drama,classics	Othello, the Moor of Venice	William Shakespeare
+1	drama	drama,classics	Othello	William Shakespeare
 1	drama	drama,classics	King Lear	William Shakespeare
 1	drama	comedy,fantasy	A Midsummer Night's Dream	William Shakespeare
 1	drama	comedy,classics	The Merchant of Venice	William Shakespeare
@@ -255,7 +253,6 @@ batch	kind	genres	title	author
 1	drama	drama,classics	The Tragical History of Doctor Faustus	Christopher Marlowe
 1	poetry	classics	Leaves of Grass	Walt Whitman
 1	poetry	classics	Poems by Emily Dickinson, Three Series, Complete	Emily Dickinson
-1	poetry	classics	Lyrical Ballads, With a Few Other Poems	William Wordsworth
 1	poetry	gothic,classics	The Rime of the Ancient Mariner	Samuel Taylor Coleridge
 1	poetry	classics,religion	Songs of Innocence and of Experience	William Blake
 1	poetry	mythology-folklore,classics	Idylls of the King	Alfred Tennyson
@@ -265,20 +262,20 @@ batch	kind	genres	title	author
 1	poetry	classics	The Waste Land	T. S. Eliot
 1	poetry	classics	Prufrock and Other Observations	T. S. Eliot
 1	poetry	philosophy,religion	The Prophet	Kahlil Gibran
-1	poetry	philosophy,classics	Rubáiyát of Omar Khayyám	Omar Khayyam
+1	poetry	philosophy,classics	The Rubaiyat of Omar Khayyam	Omar Khayyam
 1	poetry	classics	A Shropshire Lad	A. E. Housman
-1	poetry	fantasy,classics	Goblin Market	Christina Georgina Rossetti
+1	poetry	fantasy,classics	Goblin Market, The Prince's Progress, and Other Poems	Christina Georgina Rossetti
 1	poetry	romance,classics	Sonnets from the Portuguese	Elizabeth Barrett Browning
 1	poetry	mythology-folklore,classics	The Song of Hiawatha	Henry Wadsworth Longfellow
 1	poetry	classics,religion	Gitanjali	Rabindranath Tagore
-1	poetry	classics	Lyrics of Lowly Life	Paul Laurence Dunbar
+1	poetry	classics	The Complete Poems of Paul Laurence Dunbar	Paul Laurence Dunbar
 1	poetry	religion,classics	Poems on Various Subjects, Religious and Moral	Phillis Wheatley
 1	nonfiction	philosophy,science	Walden, and On The Duty Of Civil Disobedience	Henry David Thoreau
 1	essay	philosophy	Essays — First Series	Ralph Waldo Emerson
 1	memoir	biography-memoir,history	Narrative of the Life of Frederick Douglass, an American Slave	Frederick Douglass
 1	memoir	biography-memoir,history	Up from Slavery	Booker T. Washington
 1	essay	history,politics-society	The Souls of Black Folk	W. E. B. Du Bois
-1	memoir	biography-memoir,history	Incidents in the Life of a Slave Girl	Harriet A. Jacobs
+1	memoir	biography-memoir,history	Incidents in the Life of a Slave Girl, Written by Herself	Harriet A. Jacobs
 1	memoir	biography-memoir,history	The Interesting Narrative of the Life of Olaudah Equiano, Or Gustavus Vassa, The African	Olaudah Equiano
 1	memoir	biography-memoir,history	The Autobiography of Benjamin Franklin	Benjamin Franklin
 1	nonfiction	science	On the Origin of Species By Means of Natural Selection	Charles Darwin
@@ -290,7 +287,7 @@ batch	kind	genres	title	author
 1	nonfiction	politics-society,philosophy	A Vindication of the Rights of Woman	Mary Wollstonecraft
 1	nonfiction	politics-society,history	Common Sense	Thomas Paine
 1	nonfiction	politics-society,philosophy	Leviathan	Thomas Hobbes
-1	nonfiction	philosophy,science	A Discourse on Method	René Descartes
+1	nonfiction	philosophy,science	Discourse on the Method of Rightly Conducting One's Reason and of Seeking Truth in the Sciences	René Descartes
 1	nonfiction	philosophy	Thus Spake Zarathustra	Friedrich Wilhelm Nietzsche
 1	nonfiction	philosophy	Beyond Good and Evil	Friedrich Wilhelm Nietzsche
 1	nonfiction	psychology,religion	The Varieties of Religious Experience	William James
@@ -299,7 +296,7 @@ batch	kind	genres	title	author
 1	memoir	biography-memoir	The Story of My Life	Helen Keller
 1	nonfiction	travel,science	My First Summer in the Sierra	John Muir
 1	nonfiction	education	The Elements of Style	William Strunk
-1	nonfiction	history,politics-society	Native Life in South Africa, Before and Since the European War and the Boer Rebellion	Sol T. Plaatje
+1	nonfiction	history,politics-society	Native Life in South Africa	Sol. T. Plaatje
 1	nonfiction	philosophy,religion	The Book of Tea	Kakuzo Okakura
 1	nonfiction	philosophy,history	Bushido, the Soul of Japan	Inazo Nitobe
 1	short_stories	horror,mythology-folklore	Kwaidan	Lafcadio Hearn
