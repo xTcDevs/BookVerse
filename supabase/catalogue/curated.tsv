@@ -18,12 +18,12 @@ batch	kind	genres	title	author
 1	novel	literary-fiction,classics	Bleak House	Charles Dickens
 1	novella	classics	A Christmas Carol in Prose	Charles Dickens
 1	novel	literary-fiction,classics	Hard Times	Charles Dickens
-1	novel	literary-fiction,classics	Little Dorrit	Charles Dickens
-1	novel	literary-fiction,classics	Our Mutual Friend	Charles Dickens
+2	novel	literary-fiction,classics	Little Dorrit	Charles Dickens
+2	novel	literary-fiction,classics	Our Mutual Friend	Charles Dickens
 1	novel	comedy,classics	The Pickwick Papers	Charles Dickens
-1	novel	literary-fiction,classics	Nicholas Nickleby	Charles Dickens
-1	novel	literary-fiction,classics	The Old Curiosity Shop	Charles Dickens
-1	novel	mystery,classics	The Mystery of Edwin Drood	Charles Dickens
+2	novel	literary-fiction,classics	Nicholas Nickleby	Charles Dickens
+2	novel	literary-fiction,classics	The Old Curiosity Shop	Charles Dickens
+2	novel	mystery,classics	The Mystery of Edwin Drood	Charles Dickens
 1	novel	literary-fiction,classics	Tess of the d'Urbervilles	Thomas Hardy
 1	novel	romance,classics	Far from the Madding Crowd	Thomas Hardy
 1	novel	literary-fiction,classics	Jude the Obscure	Thomas Hardy
@@ -35,21 +35,21 @@ batch	kind	genres	title	author
 1	novel	literary-fiction,classics	Adam Bede	George Eliot
 1	novel	romance,classics	North and South	Elizabeth Cleghorn Gaskell
 1	novel	comedy,classics	Cranford	Elizabeth Cleghorn Gaskell
-1	novel	literary-fiction,classics	Wives and Daughters	Elizabeth Cleghorn Gaskell
+2	novel	literary-fiction,classics	Wives and Daughters	Elizabeth Cleghorn Gaskell
 1	novel	satire,classics	Vanity Fair	William Makepeace Thackeray
-1	novel	literary-fiction,classics	Barchester Towers	Anthony Trollope
+2	novel	literary-fiction,classics	Barchester Towers	Anthony Trollope
 1	novel	horror,science-fiction,gothic	Frankenstein	Mary Wollstonecraft Shelley
 1	novel	horror,gothic	Dracula	Bram Stoker
-1	novel	horror,gothic	The Jewel of Seven Stars	Bram Stoker
+2	novel	horror,gothic	The Jewel of Seven Stars	Bram Stoker
 1	novel	adventure,classics	Treasure Island	Robert Louis Stevenson
 1	novella	horror,gothic	The Strange Case of Dr. Jekyll and Mr. Hyde	Robert Louis Stevenson
 1	novel	adventure,historical-fiction	Kidnapped	Robert Louis Stevenson
-1	novel	adventure,historical-fiction	The Black Arrow	Robert Louis Stevenson
+2	novel	adventure,historical-fiction	The Black Arrow	Robert Louis Stevenson
 1	poetry	children	A Child's Garden of Verses	Robert Louis Stevenson
 1	novel	gothic,literary-fiction	The Picture of Dorian Gray	Oscar Wilde
 1	drama	comedy,classics	The Importance of Being Earnest	Oscar Wilde
-1	drama	comedy,classics	An Ideal Husband	Oscar Wilde
-1	drama	comedy,classics	Lady Windermere's Fan	Oscar Wilde
+2	drama	comedy,classics	An Ideal Husband	Oscar Wilde
+2	drama	comedy,classics	Lady Windermere's Fan	Oscar Wilde
 1	short_stories	children,mythology-folklore	The Happy Prince, and Other Tales	Oscar Wilde
 1	poetry	classics	The Ballad of Reading Gaol	Oscar Wilde
 1	novel	mystery,crime	A Study in Scarlet	Arthur Conan Doyle
@@ -59,19 +59,19 @@ batch	kind	genres	title	author
 1	novel	mystery,crime	The Hound of the Baskervilles	Arthur Conan Doyle
 1	short_stories	mystery,crime	The Return of Sherlock Holmes	Arthur Conan Doyle
 1	novel	mystery,crime	The Valley of Fear	Arthur Conan Doyle
-1	short_stories	mystery,crime	His Last Bow	Arthur Conan Doyle
+2	short_stories	mystery,crime	His Last Bow	Arthur Conan Doyle
 1	novel	adventure,science-fiction	The Lost World	Arthur Conan Doyle
 1	novella	science-fiction,time-travel	The Time Machine	H. G. Wells
 1	novel	science-fiction	The War of the Worlds	H. G. Wells
 1	novel	science-fiction	The Invisible Man	H. G. Wells
 1	novel	science-fiction,horror	The Island of Doctor Moreau	H. G. Wells
-1	novel	science-fiction	The First Men in the Moon	H. G. Wells
+2	novel	science-fiction	The First Men in the Moon	H. G. Wells
 1	novel	science-fiction,adventure	Twenty Thousand Leagues under the Sea	Jules Verne
 1	novel	adventure,classics	Around the World in Eighty Days	Jules Verne
 1	novel	science-fiction,adventure	A Journey to the Centre of the Earth	Jules Verne
 1	novel	science-fiction,adventure	From the Earth to the Moon	Jules Verne
 1	novel	adventure,science-fiction	The Mysterious Island	Jules Verne
-1	novel	adventure	Five Weeks in a Balloon	Jules Verne
+2	novel	adventure	Five Weeks in a Balloon	Jules Verne
 1	novel	fantasy,children	Alice's Adventures in Wonderland	Lewis Carroll
 1	novel	fantasy,children	Through the Looking-Glass	Lewis Carroll
 1	poetry	comedy,children	The Hunting of the Snark	Lewis Carroll
@@ -82,9 +82,9 @@ batch	kind	genres	title	author
 1	novel	children,classics	Little Lord Fauntleroy	Frances Hodgson Burnett
 1	novel	children,classics	Anne of Green Gables	L. M. Montgomery
 1	novel	children,classics	Anne of Avonlea	L. M. Montgomery
-1	novel	children,classics	Anne of the Island	L. M. Montgomery
+2	novel	children,classics	Anne of the Island	L. M. Montgomery
 1	novel	classics,children	Little Women	Louisa May Alcott
-1	novel	classics,children	Little Men	Louisa May Alcott
+2	novel	classics,children	Little Men	Louisa May Alcott
 1	novel	adventure,classics	Adventures of Huckleberry Finn	Mark Twain
 1	novel	adventure,classics	The Adventures of Tom Sawyer, Complete	Mark Twain
 1	novel	satire,time-travel	A Connecticut Yankee in King Arthur's Court	Mark Twain
@@ -124,10 +124,10 @@ batch	kind	genres	title	author
 1	novel	satire,literary-fiction	Main Street	Sinclair Lewis
 1	novel	satire,literary-fiction	Babbitt	Sinclair Lewis
 1	novel	fantasy,children	The Wonderful Wizard of Oz	L. Frank Baum
-1	novel	fantasy,children	The Marvelous Land of Oz	L. Frank Baum
+2	novel	fantasy,children	The Marvelous Land of Oz	L. Frank Baum
 1	novel	adventure,action	Tarzan of the Apes	Edgar Rice Burroughs
 1	novel	science-fiction,adventure	A Princess of Mars	Edgar Rice Burroughs
-1	novel	science-fiction,adventure	At the Earth's Core	Edgar Rice Burroughs
+2	novel	science-fiction,adventure	At the Earth's Core	Edgar Rice Burroughs
 1	novel	science-fiction,satire	Herland	Charlotte Perkins Gilman
 1	short_stories	horror,psychological-thriller	The Yellow Wallpaper	Charlotte Perkins Gilman
 1	novella	literary-fiction,classics	Heart of Darkness	Joseph Conrad
@@ -135,7 +135,7 @@ batch	kind	genres	title	author
 1	novel	thriller,literary-fiction	The Secret Agent	Joseph Conrad
 1	novel	literary-fiction,classics	Nostromo	Joseph Conrad
 1	short_stories	children,adventure	The Jungle Book	Rudyard Kipling
-1	short_stories	children,adventure	The Second Jungle Book	Rudyard Kipling
+2	short_stories	children,adventure	The Second Jungle Book	Rudyard Kipling
 1	novel	adventure,classics	Kim	Rudyard Kipling
 1	short_stories	children,mythology-folklore	Just So Stories	Rudyard Kipling
 1	novel	adventure,children	Captains Courageous	Rudyard Kipling
@@ -143,12 +143,12 @@ batch	kind	genres	title	author
 1	novel	literary-fiction,classics	Howards End	E. M. Forster
 1	novel	literary-fiction,classics	Mrs. Dalloway	Virginia Woolf
 1	novel	literary-fiction,classics	Jacob's Room	Virginia Woolf
-1	novel	literary-fiction,classics	The Voyage Out	Virginia Woolf
+2	novel	literary-fiction,classics	The Voyage Out	Virginia Woolf
 1	novel	literary-fiction,classics	Ulysses	James Joyce
 1	short_stories	literary-fiction,classics	Dubliners	James Joyce
 1	novel	literary-fiction,classics	A Portrait of the Artist as a Young Man	James Joyce
 1	novel	literary-fiction,classics	Sons and Lovers	D. H. Lawrence
-1	novel	literary-fiction,classics	Women in Love	D. H. Lawrence
+2	novel	literary-fiction,classics	Women in Love	D. H. Lawrence
 1	novel	literary-fiction,classics	The Rainbow	D. H. Lawrence
 1	novel	literary-fiction,classics	Of Human Bondage	W. Somerset Maugham
 1	novel	literary-fiction,classics	The Moon and Sixpence	W. Somerset Maugham
@@ -185,12 +185,12 @@ batch	kind	genres	title	author
 1	novel	historical-fiction,gothic	Notre-Dame de Paris	Victor Hugo
 1	novel	adventure,historical-fiction	The Three Musketeers	Alexandre Dumas
 1	novel	adventure,historical-fiction	The Count of Monte Cristo	Alexandre Dumas
-1	novel	adventure,historical-fiction	Twenty Years After	Alexandre Dumas
+2	novel	adventure,historical-fiction	Twenty Years After	Alexandre Dumas
 1	novel	literary-fiction,classics	Madame Bovary	Gustave Flaubert
 1	novel	literary-fiction,classics	The Red and the Black	Stendhal
 1	novel	literary-fiction,classics	Father Goriot	Honoré de Balzac
 1	novel	literary-fiction,classics	Germinal	Émile Zola
-1	novel	crime,psychological-thriller	Thérèse Raquin	Émile Zola
+1	novel	crime,psychological-thriller	Theresa Raquin	Émile Zola
 1	novella	satire,philosophy	Candide	Voltaire
 1	novel	gothic,romance	The Phantom of the Opera	Gaston Leroux
 1	novel	literary-fiction,classics	Swann's Way	Marcel Proust
@@ -204,7 +204,6 @@ batch	kind	genres	title	author
 1	drama	drama,classics	A Doll's House	Henrik Ibsen
 1	drama	drama,classics	Hedda Gabler	Henrik Ibsen
 1	drama	drama,classics	An Enemy of the People	Henrik Ibsen
-1	drama	drama,classics	Peer Gynt	Henrik Ibsen
 1	poetry	classics,religion	The Divine Comedy	Dante Alighieri
 1	short_stories	classics,comedy	The Decameron of Giovanni Boccaccio	Giovanni Boccaccio
 1	nonfiction	politics-society,philosophy	The Prince	Niccolò Machiavelli
@@ -229,7 +228,7 @@ batch	kind	genres	title	author
 1	poetry	religion,classics	Paradise Lost	John Milton
 1	novel	religion,classics	The Pilgrim's Progress from this world to that which is to come	John Bunyan
 1	novel	adventure,classics	The Life and Adventures of Robinson Crusoe	Daniel Defoe
-1	novel	literary-fiction,classics	Moll Flanders	Daniel Defoe
+1	novel	literary-fiction,classics	The Fortunes and Misfortunes of the Famous Moll Flanders	Daniel Defoe
 1	novel	satire,adventure,classics	Gulliver's Travels into Several Remote Nations of the World	Jonathan Swift
 1	essay	satire,politics-society	A Modest Proposal	Jonathan Swift
 1	novel	comedy,classics	History of Tom Jones, a Foundling	Henry Fielding
