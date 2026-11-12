@@ -3,7 +3,7 @@
 -- pg_net's queue and the answers are inserted by hand, as pg_net would store them.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(68);
+select plan(69);
 
 create or replace function pg_temp.act_as(who uuid) returns void language plpgsql as $$
 begin
@@ -78,7 +78,7 @@ select '<entry xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.ya
   <content type="html">&lt;p&gt;First paragraph of the description.&lt;/p&gt; &lt;p&gt;Second paragraph, with &lt;i&gt;italics&lt;/i&gt;.&lt;/p&gt;</content>
   <category scheme="http://purl.org/dc/terms/LCSH" term="Detective and mystery stories"/>' || subjects || '
   <link href="https://standardebooks.org/ebooks/' || path || '" rel="alternate" type="application/xhtml+xml"/>
-  <link href="https://standardebooks.org/ebooks/' || path || '/downloads/book.epub?source=feed" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
+  <link href="https://standardebooks.org/ebooks/' || path || '/downloads/' || replace(path, '/', '_') || '.epub?source=feed" rel="enclosure" title="Recommended compatible epub" type="application/epub+zip"/>
   <link href="https://standardebooks.org/ebooks/' || path || '/text/single-page" rel="enclosure" title="XHTML" type="application/xhtml+xml"/>
 </entry>' $$;
 
@@ -256,7 +256,7 @@ select is(private.ingest_standard_ebooks_entry(pg_temp.se_entry('fergus-hume/the
   now()) ->> 'outcome', 'created', 'a new release creates a new, unpublished work');
 select results_eq($$select o.access::text, o.url from public.offers o join public.editions e on e.id = o.edition_id
                     join public.works w on w.id = e.work_id where w.title = 'The Green Mummy' order by 1$$,
-  $$values ('download'::text, 'https://standardebooks.org/ebooks/fergus-hume/the-green-mummy/downloads/book.epub'::text),
+  $$values ('download'::text, 'https://standardebooks.org/ebooks/fergus-hume/the-green-mummy/downloads/fergus-hume_the-green-mummy.epub'::text),
            ('read_official_external', 'https://standardebooks.org/ebooks/fergus-hume/the-green-mummy/text/single-page')$$,
   'its links go to Standard Ebooks, without feed tracking parameters');
 
@@ -277,6 +277,14 @@ select throws_ok($sql$insert into public.offers (edition_id, access, license, pr
   join public.sources s on s.slug = 'standard-ebooks'
   where w.title = 'The Green Mummy'$sql$,
   '23514', null, 'Standard Ebooks offers use only the expected reading and download paths');
+select lives_ok($sql$insert into public.offers (edition_id, access, license, provider, source_id, url)
+  select e.id, 'download', 'public_domain', 'Standard Ebooks', s.id,
+         'https://standardebooks.org/ebooks/leo-tolstoy/war-and-peace/louise-maude_aylmer-maude/downloads/leo-tolstoy_war-and-peace_louise-maude_aylmer-maude.epub'
+  from public.editions e
+  join public.works w on w.id = e.work_id
+  join public.sources s on s.slug = 'standard-ebooks'
+  where w.title = 'The Green Mummy'$sql$,
+  'real Standard Ebooks links, including translated editions, are accepted');
 
 select * from finish();
 rollback;
