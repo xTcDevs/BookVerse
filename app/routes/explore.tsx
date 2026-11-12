@@ -4,7 +4,8 @@ import type { Route } from './+types/explore';
 import { BookCollection, EmptyState, SectionHead, bylineOf } from '~/components/books';
 import { allWorks, type Work } from '~/data/catalogue';
 import { formatForKind, formatList, type FormatSlug } from '~/data/formats';
-import { genres, getGenre } from '~/data/genres';
+import { genreFamilySlugs, genres, getGenre } from '~/data/genres';
+import { matchesSearchQuery } from '~/data/search';
 import { usePrefs } from '~/lib/prefs/hooks';
 import { buildMeta } from '~/lib/seo';
 import { useHydrated } from '~/lib/use-hydrated';
@@ -24,14 +25,8 @@ function matches(work: Work, query: string): boolean {
     bylineOf(work),
     ...work.genres.map((g) => getGenre(g)?.name ?? g),
     formatForKind(work.kind).label,
-  ]
-    .join(' ')
-    .toLocaleLowerCase();
-  return query
-    .toLocaleLowerCase()
-    .split(/\s+/)
-    .filter(Boolean)
-    .every((term) => haystack.includes(term));
+  ].join(' ');
+  return matchesSearchQuery(haystack, query);
 }
 
 function isFree(work: Work): boolean {
@@ -49,14 +44,16 @@ export default function Explore() {
   const freeOnly = hydrated && params.get('access') === 'free';
 
   const results = useMemo(
-    () =>
-      allWorks().filter(
+    () => {
+      const selectedGenres = genre ? new Set(genreFamilySlugs(genre)) : null;
+      return allWorks().filter(
         (w) =>
           matches(w, q) &&
           (!format || formatForKind(w.kind).slug === format) &&
-          (!genre || w.genres.includes(genre)) &&
+          (!selectedGenres || w.genres.some((slug) => selectedGenres.has(slug))) &&
           (!freeOnly || isFree(w)),
-      ),
+      );
+    },
     [q, format, genre, freeOnly],
   );
 
@@ -143,12 +140,12 @@ export default function Explore() {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="results-title" aria-live="polite">
+      <section className="section" aria-labelledby="results-title">
         <SectionHead
           title={filtering ? 'Results' : 'The starter shelf'}
           id="results-title"
           action={
-            <span className="result-count">
+            <span className="result-count" role="status" aria-atomic="true">
               {results.length} {results.length === 1 ? 'book' : 'books'}
             </span>
           }

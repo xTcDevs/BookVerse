@@ -100,6 +100,14 @@ export const genres: Genre[] = [
   },
   { slug: 'drama', name: 'Drama', group: 'fiction', description: 'Plays and emotionally driven stories.' },
   { slug: 'comedy', name: 'Comedy', group: 'fiction', description: 'Wit, satire and joy.' },
+  { slug: 'satire', name: 'Satire', group: 'fiction', parent: 'comedy', description: 'Laughter with a target.' },
+  { slug: 'war', name: 'War', group: 'fiction', description: 'Soldiers, battles and what they leave behind.' },
+  {
+    slug: 'mythology-folklore',
+    name: 'Mythology and folklore',
+    group: 'fiction',
+    description: 'Myths, legends, fairy tales and epics.',
+  },
   {
     slug: 'slice-of-life',
     name: 'Slice of life',
@@ -121,6 +129,14 @@ export const genres: Genre[] = [
   { slug: 'business', name: 'Business', group: 'non-fiction', description: 'Work, money and organisations.' },
   { slug: 'education', name: 'Education', group: 'non-fiction', description: 'Textbooks and learning.' },
   { slug: 'science', name: 'Science', group: 'non-fiction', description: 'Discovery and the natural world.' },
+  { slug: 'travel', name: 'Travel', group: 'non-fiction', description: 'Journeys and the places they reach.' },
+  {
+    slug: 'politics-society',
+    name: 'Politics and society',
+    group: 'non-fiction',
+    description: 'Power, rights and how people live together.',
+  },
+  { slug: 'religion', name: 'Religion', group: 'non-fiction', description: 'Faith, scripture and spiritual writing.' },
 ];
 
 export type GenreSlug = string;
@@ -137,4 +153,9 @@ export function topLevelGenres(group?: Genre['group']): Genre[] {
 
 export function subgenres(parentSlug: string): Genre[] {
   return genres.filter((g) => g.parent === parentSlug);
+}
+
+/** The selected genre and its direct subgenres, matching genre landing pages. */
+export function genreFamilySlugs(slug: string): string[] {
+  return [slug, ...subgenres(slug).map((g) => g.slug)];
 }
