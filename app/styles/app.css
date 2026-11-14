@@ -281,6 +281,7 @@ textarea {
   font-weight: 500;
   line-height: 1.4;
   white-space: nowrap;
+  max-width: 100%;
 }
 
 .badge .icon {
@@ -297,6 +298,8 @@ textarea {
 .badge--info {
   border-style: dashed;
   color: var(--bv-muted);
+  /* long source notes wrap instead of pushing their card past the screen edge */
+  white-space: normal;
 }
 
 .badge-row {
@@ -1905,13 +1908,14 @@ dialog::backdrop {
 
 .genre-index {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
   gap: 1.25rem;
 }
 
 .genre-tile {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   gap: 0.5rem;
   padding: 1.25rem;
   border-radius: var(--bv-radius-m);
@@ -2030,5 +2034,15 @@ dialog::backdrop {
   }
   .range label {
     grid-column: 1 / -1;
+  }
+}
+
+/* Very narrow phones: wrap the settings sections and reading format tabs
+   instead of hiding the last items off screen in a sideways scroll. */
+@media (max-width: 479px) {
+  .settings-nav,
+  .tabs {
+    flex-wrap: wrap;
+    overflow-x: visible;
   }
 }
